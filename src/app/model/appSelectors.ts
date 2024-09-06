@@ -1,4 +1,4 @@
-import { AppRootState } from '@/app/providers/store/store'
+import { AppRootState } from '../providers/store/store'
 
 export const selectAppStatus = (state: AppRootState) => state.app?.status
 export const selectAppError = (state: AppRootState) => state.app?.error

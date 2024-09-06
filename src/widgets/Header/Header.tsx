@@ -33,7 +33,7 @@ export const Header = () => {
             Table
           </Typography>
           {isLoggedIn && (
-            <Button onClick={handleLogout} color="inherit">
+            <Button onClick={handleLogout} color="primary">
               Log out
             </Button>
           )}

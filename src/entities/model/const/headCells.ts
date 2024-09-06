@@ -1,9 +1,9 @@
 export const headCells = [
+  { id: 'documentName', label: 'Название документа' },
+  { id: 'documentType', label: 'Тип документа' },
+  { id: 'documentStatus', label: 'Статус документа' },
   { id: 'companySigDate', label: 'Дата подписи компании' },
   { id: 'companySignatureName', label: 'Подпись компании' },
-  { id: 'documentName', label: 'Название документа' },
-  { id: 'documentStatus', label: 'Статус документа' },
-  { id: 'documentType', label: 'Тип документа' },
   { id: 'employeeNumber', label: 'Номер сотрудника' },
   { id: 'employeeSigDate', label: 'Дата подписи сотрудника' },
   { id: 'employeeSignatureName', label: 'Подпись сотрудника' },

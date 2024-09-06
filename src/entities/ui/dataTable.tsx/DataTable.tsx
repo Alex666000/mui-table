@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { tablesThunks } from '@/entities/model/dataTableSlice'
-import { selectDataTable } from '@/entities/model/dataTableSelectors'
+import { tablesThunks } from '@/entities/model/slice/dataTableSlice'
+import { selectDataTable } from '@/entities/model/selectors/dataTableSelectors'
 import { selectIsLoggedIn } from '@/features/auth/model/selectors/auth.selectors'
 import TableRow from '@mui/material/TableRow'
 import TableCell from '@mui/material/TableCell'
@@ -10,15 +10,15 @@ import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import Button from '@mui/material/Button'
 import { selectAppStatus } from '@/app/model/appSelectors'
-import { TableData } from '@/entities/api/dataTableApi'
 import { EnhancedTableContent } from '@/entities/ui/dataTable.tsx/EnhancedTableContent'
 import { RequestStatus } from '@/app/model/appReducer'
 import { NotFindAnything } from '@/entities/ui/dataTable.tsx/NotFindAnything'
 import { EmptyIcon } from '@/shared/assets/icons/EmptyIcon'
 import { formatDateISO } from '@/entities/model/utils/formatDateISO'
-import { AddRecordModal } from '@/entities/ui/AddRecordModal'
+import { AddRecordModal } from '@/entities/ui/dataTable.tsx/AddRecordModal'
 import { headCells } from '@/entities/model/const/headCells'
 import { EditRecordModal } from '@/entities/ui/dataTable.tsx/EditRecordModal'
+import {TableData} from "../../model/types";
 
 export const DataTable: FC = () => {
   const dispatch = useDispatch()

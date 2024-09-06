@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { createAppAsyncThunk, handleServerNetworkError } from '@/shared/utils'
 import { setAppStatus } from '@/app/model/appReducer'
-import { dataTableAPI, TableData } from '@/entities/api/dataTableApi'
+import { dataTableAPI } from '@/entities/api/dataTableApi'
 import { AxiosError } from 'axios'
 import { AppRootState } from '@/app/providers/store/store'
 import { ResultCode } from '@/shared/constants'
+import { TableData } from '@/entities/model/types'
 
 const slice = createSlice({
   name: 'table',
