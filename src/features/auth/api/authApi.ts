@@ -1,10 +1,10 @@
 import { instance } from '@/shared/api'
-import { LoginParams, BadRequest } from '@/features/auth/model/type'
+import { LoginParams, LoginSuccessResponse } from '@/features/auth/model/type'
 
 export const authAPI = {
-  login(arg: LoginParams) {
-    const { email, password } = arg
-    return instance.post<BadRequest>('/ru/data/v3/testmethods/docs/login', {
+  login(data: LoginParams) {
+    const { email, password } = data
+    return instance.post<LoginSuccessResponse>('/ru/data/v3/testmethods/docs/login', {
       email,
       password,
     })

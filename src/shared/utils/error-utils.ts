@@ -33,7 +33,7 @@ export const handleServerNetworkError = (
     // ❗ Проверка на наличие нативной ошибки - например "мапимся" по массиву undefined
   } else if (error instanceof Error) {
     errorMessage = `Native error: ${error.message}`
-    // ❗Какой-то другой непонятный кейс
+    // ❗ Какой-то другой непонятный кейс
   } else {
     // переводим объект в строку
     errorMessage = JSON.stringify(error)

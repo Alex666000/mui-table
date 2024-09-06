@@ -1,5 +1,3 @@
-import { authAPI } from '@/features/auth/api'
-
 // responses
 export type BaseResponse<D = {} | null> = {
   error_code: number
@@ -8,7 +6,7 @@ export type BaseResponse<D = {} | null> = {
   timings?: any
 }
 
-export type BadRequest = BaseResponse & {
+export type LoginSuccessResponse = BaseResponse & {
   error_message: string
 }
 

@@ -5,7 +5,7 @@ export type FetchTableResponse<D = {}> = {
   error_message: string
   data: D[]
   profiling: string
-  timings?: any
+  timings?: null
 }
 export type TableData = {
   id: string
