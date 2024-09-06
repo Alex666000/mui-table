@@ -1,4 +1,3 @@
-// src/components/AddRecordModal.tsx
 import { FC } from 'react'
 import { Modal, Box, TextField, Button } from '@mui/material'
 import { TableData } from '@/entities/api/dataTableApi'
@@ -90,7 +89,11 @@ export const AddRecordModal: FC<AddRecordModalProps> = ({
           fullWidth
           margin="normal"
         />
-        <Button variant="contained" color="primary" onClick={() => onSave(newRecord)}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => onSave(newRecord)}
+          sx={{ marginRight: '50px' }}>
           Сохранить
         </Button>
         <Button variant="contained" color="error" onClick={onClose}>
