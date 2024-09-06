@@ -14,24 +14,25 @@ const slice = createSlice({
   },
   reducers: {} as any,
   extraReducers: (builder) => {
-    builder.addCase(fetchTableData.fulfilled, (state: TableState, action) => {
-      if (action.payload) {
-        state.data = action.payload.tableData
-        state.isDataLoaded = true
-      }
-    })
-    builder.addCase(createRecord.fulfilled, (state: TableState, action) => {
-      state.data.push(action.payload)
-    })
-    builder.addCase(updateRecord.fulfilled, (state: TableState, action) => {
-      const index = state.data.findIndex((record) => record.id === action.payload.id)
-      if (index > -1) {
-        state.data[index] = action.payload
-      }
-    })
-    builder.addCase(deleteRecord.fulfilled, (state: TableState, action) => {
-      state.data = state.data.filter((record) => record.id !== action.payload.id)
-    })
+    builder
+      .addCase(fetchTableData.fulfilled, (state: TableState, action) => {
+        if (action.payload) {
+          state.data = action.payload.tableData
+          state.isDataLoaded = true
+        }
+      })
+      .addCase(createRecord.fulfilled, (state: TableState, action) => {
+        state.data.push(action.payload)
+      })
+      .addCase(updateRecord.fulfilled, (state: TableState, action) => {
+        const index = state.data.findIndex((record) => record.id === action.payload.id)
+        if (index !== -1) {
+          state.data[index] = action.payload
+        }
+      })
+      .addCase(deleteRecord.fulfilled, (state: TableState, action) => {
+        state.data = state.data.filter((record) => record.id !== action.payload.id)
+      })
   },
 })
 
@@ -131,6 +132,7 @@ const deleteRecord = createAppAsyncThunk<TableData, string>(
   }
 )
 
+// reducer + actions + thunks
 export const dataTableReducer = slice.reducer
 export const {} = slice.actions
 export const tablesThunks = { fetchTableData, createRecord, updateRecord, deleteRecord }

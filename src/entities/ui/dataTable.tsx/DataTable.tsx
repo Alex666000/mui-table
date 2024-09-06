@@ -9,7 +9,7 @@ import TableCell from '@mui/material/TableCell'
 import IconButton from '@mui/material/IconButton'
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
-import { useNavigate } from 'react-router-dom'
+import Button from '@mui/material/Button'
 import { selectAppStatus } from '@/app/model/appSelectors'
 import { TableData } from '@/entities/api/dataTableApi'
 import { EnhancedTableContent } from '@/entities/ui/dataTable.tsx/EnhancedTableContent'
@@ -17,9 +17,9 @@ import { RequestStatus } from '@/app/model/appReducer'
 import { NotFindAnything } from '@/entities/ui/dataTable.tsx/NotFindAnything'
 import { EmptyIcon } from '@/shared/assets/icons/EmptyIcon'
 import { formatDateISO } from '@/entities/model/utils/formatDateISO'
-import Button from '@mui/material/Button'
 import { AddRecordModal } from '@/entities/ui/AddRecordModal'
 import { headCells } from '@/entities/model/const/headCells'
+import { EditRecordModal } from '@/entities/ui/dataTable.tsx/EditRecordModal'
 
 export const DataTable: FC = () => {
   const dispatch = useDispatch()
@@ -27,9 +27,10 @@ export const DataTable: FC = () => {
   const tableData = useSelector(selectDataTable)
   const status = useSelector(selectAppStatus)
 
-  const [isAddModalOpen, setAddModalOpen] = useState(false)
+  const [isAddModalOpen, setAddModalOpen] = useState(false) // Состояние для модального окна добавления
+  const [isEditModalOpen, setEditModalOpen] = useState(false) // Состояние для модального окна редактирования
   const [newRecord, setNewRecord] = useState<TableData>({
-    id: `${Math.random()}`, // временный ID, генерируется локально
+    id: `${Math.random()}`, // временный ID, генерируем локально
     documentStatus: '',
     employeeNumber: '',
     documentType: '',
@@ -39,6 +40,7 @@ export const DataTable: FC = () => {
     employeeSigDate: new Date().toISOString().slice(0, 16),
     companySigDate: new Date().toISOString().slice(0, 16),
   })
+  const [editRecord, setEditRecord] = useState<TableData | null>(null) // Состояние для записи, которую редактируем
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -65,8 +67,14 @@ export const DataTable: FC = () => {
     setAddModalOpen(true)
   }
 
+  const handleEdit = (record: TableData) => {
+    setEditRecord(record) // Устанавливаем запись для редактирования
+    setEditModalOpen(true) // Открываем модальное окно редактирования
+  }
+
   const handleModalClose = () => {
     setAddModalOpen(false)
+    setEditModalOpen(false)
   }
 
   const handleSaveRecord = async (record: TableData) => {
@@ -90,6 +98,19 @@ export const DataTable: FC = () => {
     }
   }
 
+  const handleUpdateRecord = async (record: TableData) => {
+    try {
+      if (editRecord?.id) {
+        await dispatch(tablesThunks.updateRecord({ id: editRecord.id, data: record }))
+        dispatch(tablesThunks.fetchTableData()) // Перезагружаем данные
+      }
+    } catch (error) {
+    } finally {
+      setEditModalOpen(false)
+      setEditRecord(null)
+    }
+  }
+
   const tableItems = (tableData as TableData[]).map((row, index) => (
     <TableRow hover key={index}>
       <TableCell align={'left'}>{formatDateISO(row.companySigDate)}</TableCell>
@@ -101,7 +122,7 @@ export const DataTable: FC = () => {
       <TableCell align={'left'}>{formatDateISO(row.employeeSigDate)}</TableCell>
       <TableCell align={'left'}>{row.employeeSignatureName}</TableCell>
       <TableCell align={'left'}>
-        <IconButton sx={{ padding: '6px' }}>
+        <IconButton onClick={() => handleEdit(row)} sx={{ padding: '6px' }}>
           <BorderColorOutlinedIcon />
         </IconButton>
         <IconButton onClick={() => handleDelete(row.id)} sx={{ padding: '6px' }}>
@@ -131,6 +152,15 @@ export const DataTable: FC = () => {
         newRecord={newRecord}
         setNewRecord={setNewRecord}
       />
+      {editRecord && (
+        <EditRecordModal
+          open={isEditModalOpen}
+          onClose={handleModalClose}
+          onSave={handleUpdateRecord}
+          record={editRecord}
+          setRecord={setEditRecord}
+        />
+      )}
     </>
   )
 }
