@@ -63,25 +63,27 @@ const fetchTableData = createAppAsyncThunk<{ tableData: TableData[] }, void>(
 )
 
 const createRecord = createAppAsyncThunk<TableData, TableData>(
-  `${slice.name}/createRecord`,
-  async (record, thunkAPI) => {
-    const { rejectWithValue } = thunkAPI
-
+  'table/createRecord',
+  async (newRecord, thunkAPI) => {
+    const { dispatch, rejectWithValue } = thunkAPI
     try {
-      const res = await dataTableAPI.createRecord(record)
+      const res = await dataTableAPI.createRecord(newRecord)
       if (res.status === 200) {
+        dispatch(setAppStatus({ status: 'succeeded' }))
         return res.data
       } else {
+        dispatch(setAppStatus({ status: 'failed' }))
         return rejectWithValue(null)
       }
-    } catch (error) {
+    } catch (error: any) {
+      handleServerNetworkError(error, dispatch)
       return rejectWithValue(null)
     }
   }
 )
 
 export const dataTableReducer = slice.reducer
-export const dataTableActions = slice.actions
+export const {} = slice.actions
 export const tablesThunks = { fetchTableData, createRecord }
 
 // types
