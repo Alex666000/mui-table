@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectDataTable } from '../../model/selectors'
 import { selectIsLoggedIn } from '@/features/auth/model/selectors/auth.selectors'
@@ -21,7 +21,7 @@ import { useRecordManagement } from '@/entities/model/hooks'
 import { tablesThunks } from '../../model/slice'
 import { headCells } from '../../model/const'
 
-export const DataTable: FC = () => {
+export const DataTable = () => {
   const dispatch = useDispatch()
   const isLoggedIn = useSelector(selectIsLoggedIn)
   const tableData = useSelector(selectDataTable)
@@ -37,6 +37,7 @@ export const DataTable: FC = () => {
     handleModalClose,
     handleSaveRecord,
     handleUpdateRecord,
+    handleDelete,
     setNewRecord,
     setEditRecord,
   } = useRecordManagement()
@@ -46,15 +47,6 @@ export const DataTable: FC = () => {
       dispatch(tablesThunks.fetchTableData())
     }
   }, [isLoggedIn, status, dispatch])
-
-  const handleDelete = async (id: string) => {
-    try {
-      await dispatch(tablesThunks.deleteRecord(id))
-      dispatch(tablesThunks.fetchTableData()) // Обновляем таблицу после удаления
-    } catch (error) {
-      console.error('Failed to delete the record:', error)
-    }
-  }
 
   const tableItems = (tableData as TableData[]).map((row, index) => (
     <TableRow hover key={index}>
