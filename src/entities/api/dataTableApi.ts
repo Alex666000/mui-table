@@ -11,14 +11,16 @@ export const dataTableAPI = {
       } as ReturnType<typeof instance.get>
     )
   },
-  createRecord(data: Record<string, any>) {
-    // console.log('Отправляемые данные на сервер:', data)
-
-    return instance.post('/ru/data/v3/testmethods/docs/userdocs/create', data, {
-      headers: { 'x-auth': token },
-    } as ReturnType<typeof instance.post>)
+  createRecord(data: Record) {
+    return instance.post<CreateResponseRecord<Record>>(
+      '/ru/data/v3/testmethods/docs/userdocs/create',
+      data,
+      {
+        headers: { 'x-auth': token },
+      } as ReturnType<typeof instance.post>
+    )
   },
-  updateRecord(id: string, data: Record<string, any>, token: string) {
+  updateRecord(id: string, data: Record) {
     return instance.post(`/userdocs/set/${id}`, data, {
       headers: { 'x-auth': token },
     } as ReturnType<typeof instance.post>)
@@ -39,6 +41,25 @@ export type FetchTableResponse<D = {}> = {
   timings?: any
 }
 export type TableData = {
+  id: string
+  documentStatus: string
+  employeeNumber: string
+  documentType: string
+  documentName: string
+  companySignatureName: string
+  employeeSignatureName: string
+  employeeSigDate: string
+  companySigDate: string
+}
+
+export type CreateResponseRecord<D = {}> = {
+  error_code: number
+  error_message: string
+  data: D
+  profiling: string
+  timings?: null
+}
+export type Record = {
   id: string
   documentStatus: string
   employeeNumber: string

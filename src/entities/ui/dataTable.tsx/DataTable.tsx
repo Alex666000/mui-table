@@ -65,7 +65,7 @@ export const DataTable: FC = () => {
 
   const handleSaveRecord = async (record: TableData) => {
     try {
-      await dispatch(tablesThunks.createRecord(record)).unwrap()
+      await dispatch(tablesThunks.createRecord(record))
       dispatch(tablesThunks.fetchTableData()) // Перезагружаем данные
     } catch (error) {
     } finally {

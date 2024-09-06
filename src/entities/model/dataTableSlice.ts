@@ -70,7 +70,7 @@ const createRecord = createAppAsyncThunk<TableData, TableData>(
       const res = await dataTableAPI.createRecord(newRecord)
       if (res.status === 200) {
         dispatch(setAppStatus({ status: 'succeeded' }))
-        return res.data
+        return res.data.data
       } else {
         dispatch(setAppStatus({ status: 'failed' }))
         return rejectWithValue(null)
