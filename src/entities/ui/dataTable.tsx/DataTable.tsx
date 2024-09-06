@@ -1,7 +1,6 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { tablesThunks } from '@/entities/model/slice/dataTableSlice'
-import { selectDataTable } from '@/entities/model/selectors/dataTableSelectors'
+import { selectDataTable } from '../../model/selectors'
 import { selectIsLoggedIn } from '@/features/auth/model/selectors/auth.selectors'
 import TableRow from '@mui/material/TableRow'
 import TableCell from '@mui/material/TableCell'
@@ -10,15 +9,17 @@ import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import Button from '@mui/material/Button'
 import { selectAppStatus } from '@/app/model/appSelectors'
-import { EnhancedTableContent } from '@/entities/ui/dataTable.tsx/EnhancedTableContent'
+import { EnhancedTableContent } from './EnhancedTableContent'
 import { RequestStatus } from '@/app/model/appReducer'
-import { NotFindAnything } from '@/entities/ui/dataTable.tsx/NotFindAnything'
+import { NotFindAnything } from './NotFindAnything'
 import { EmptyIcon } from '@/shared/assets/icons/EmptyIcon'
-import { formatDateISO } from '@/entities/model/utils/formatDateISO'
-import { AddRecordModal } from '@/entities/ui/dataTable.tsx/AddRecordModal'
-import { headCells } from '@/entities/model/const/headCells'
-import { EditRecordModal } from '@/entities/ui/dataTable.tsx/EditRecordModal'
-import {TableData} from "../../model/types";
+import { formatDateISO } from '../../model/utils'
+import { AddRecordModal } from './AddRecordModal'
+import { EditRecordModal } from './EditRecordModal'
+import { TableData } from '../../model/types'
+import { useRecordManagement } from '@/entities/model/hooks'
+import { tablesThunks } from '../../model/slice'
+import { headCells } from '../../model/const'
 
 export const DataTable: FC = () => {
   const dispatch = useDispatch()
@@ -26,20 +27,19 @@ export const DataTable: FC = () => {
   const tableData = useSelector(selectDataTable)
   const status = useSelector(selectAppStatus)
 
-  const [isAddModalOpen, setAddModalOpen] = useState(false) // Состояние для модального окна добавления
-  const [isEditModalOpen, setEditModalOpen] = useState(false) // Состояние для модального окна редактирования
-  const [newRecord, setNewRecord] = useState<TableData>({
-    id: `${Math.random()}`, // временный ID, генерируем локально
-    documentStatus: '',
-    employeeNumber: '',
-    documentType: '',
-    documentName: '',
-    companySignatureName: '',
-    employeeSignatureName: '',
-    employeeSigDate: new Date().toISOString().slice(0, 16),
-    companySigDate: new Date().toISOString().slice(0, 16),
-  })
-  const [editRecord, setEditRecord] = useState<TableData | null>(null) // Состояние для записи, которую редактируем
+  const {
+    isAddModalOpen,
+    isEditModalOpen,
+    newRecord,
+    editRecord,
+    handleAdd,
+    handleEdit,
+    handleModalClose,
+    handleSaveRecord,
+    handleUpdateRecord,
+    setNewRecord,
+    setEditRecord,
+  } = useRecordManagement()
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -58,55 +58,7 @@ export const DataTable: FC = () => {
       await dispatch(tablesThunks.deleteRecord(id))
       dispatch(tablesThunks.fetchTableData()) // Обновляем таблицу после удаления
     } catch (error) {
-      // console.error('Failed to delete the record:', error)
-    }
-  }
-
-  const handleAdd = () => {
-    setAddModalOpen(true)
-  }
-
-  const handleEdit = (record: TableData) => {
-    setEditRecord(record) // Устанавливаем запись для редактирования
-    setEditModalOpen(true) // Открываем модальное окно редактирования
-  }
-
-  const handleModalClose = () => {
-    setAddModalOpen(false)
-    setEditModalOpen(false)
-  }
-
-  const handleSaveRecord = async (record: TableData) => {
-    try {
-      await dispatch(tablesThunks.createRecord(record))
-      dispatch(tablesThunks.fetchTableData()) // Перезагружаем данные
-    } catch (error) {
-    } finally {
-      setAddModalOpen(false)
-      setNewRecord({
-        id: `${Math.random()}`,
-        documentStatus: '',
-        employeeNumber: '',
-        documentType: '',
-        documentName: '',
-        companySignatureName: '',
-        employeeSignatureName: '',
-        employeeSigDate: new Date().toISOString(),
-        companySigDate: new Date().toISOString(),
-      })
-    }
-  }
-
-  const handleUpdateRecord = async (record: TableData) => {
-    try {
-      if (editRecord?.id) {
-        await dispatch(tablesThunks.updateRecord({ id: editRecord.id, data: record }))
-        dispatch(tablesThunks.fetchTableData()) // Перезагружаем данные
-      }
-    } catch (error) {
-    } finally {
-      setEditModalOpen(false)
-      setEditRecord(null)
+      console.error('Failed to delete the record:', error)
     }
   }
 

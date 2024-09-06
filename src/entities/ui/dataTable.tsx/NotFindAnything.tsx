@@ -1,12 +1,11 @@
-import { FC } from 'react'
 import { RequestStatus } from '@/app/model/appReducer'
 
-type PropsType = {
+type Props = {
   status: RequestStatus
   value: string
 }
 
-export const NotFindAnything: FC<PropsType> = ({ status, value }) => {
+export const NotFindAnything = ({ status, value }: Props) => {
   return (
     <div style={{ marginBottom: '25px' }}>
       {status !== 'loading' && (
