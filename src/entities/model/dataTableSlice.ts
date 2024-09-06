@@ -63,7 +63,7 @@ const fetchTableData = createAppAsyncThunk<{ tableData: TableData[] }, void>(
 )
 
 const createRecord = createAppAsyncThunk<TableData, TableData>(
-  'table/createRecord',
+  `${slice.name}/createRecord`,
   async (newRecord, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI
     try {
@@ -75,7 +75,7 @@ const createRecord = createAppAsyncThunk<TableData, TableData>(
         dispatch(setAppStatus({ status: 'failed' }))
         return rejectWithValue(null)
       }
-    } catch (error: any) {
+    } catch (error: AxiosError) {
       handleServerNetworkError(error, dispatch)
       return rejectWithValue(null)
     }
