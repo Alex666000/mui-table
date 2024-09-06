@@ -1,18 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { createAppAsyncThunk, handleServerNetworkError } from '@/shared/utils'
 import { setAppStatus } from '@/app/model/appReducer'
-import { dataTableAPI } from '@/entities/api/dataTableApi'
+import { dataTableAPI } from '../../api'
 import { AxiosError } from 'axios'
 import { AppRootState } from '@/app/providers/store/store'
 import { ResultCode } from '@/shared/constants'
-import { TableData } from '@/entities/model/types'
+import { TableData, TableState } from '../types'
 
+// slice
 const slice = createSlice({
   name: 'table',
   initialState: {
     data: [] as TableData[],
     isDataLoaded: false, // Флаг: загружены данные с сервера?
-  },
+  } as typeof slice.getInitialState,
   reducers: {} as any,
   extraReducers: (builder) => {
     builder
@@ -38,8 +39,6 @@ const slice = createSlice({
 })
 
 // thunks
-// 1 - параметр, то что санка возвращает + то что нам надо установить в стейт
-// 2 - параметр, то что санка принимает в параметрах
 const fetchTableData = createAppAsyncThunk<{ tableData: TableData[] }, void>(
   `${slice.name}/fetchTable`,
   async (_, thunkAPI) => {
@@ -137,9 +136,3 @@ const deleteRecord = createAppAsyncThunk<TableData, string>(
 export const dataTableReducer = slice.reducer
 export const {} = slice.actions
 export const tablesThunks = { fetchTableData, createRecord, updateRecord, deleteRecord }
-
-// types
-type TableState = {
-  data: TableData[]
-  isDataLoaded: boolean
-}

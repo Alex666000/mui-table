@@ -1,4 +1,5 @@
-// types
+import { instance } from '@/shared/api'
+
 export type FetchTableResponse<D = {}> = {
   error_code: number
   error_message: string
@@ -35,4 +36,12 @@ export type Record = {
   employeeSignatureName: string
   employeeSigDate: string
   companySigDate: string
+}
+
+export type PostRequestMethod = ReturnType<typeof instance.post>
+export type GetRequestMethod = ReturnType<typeof instance.get>
+
+export type TableState = {
+  data: TableData[]
+  isDataLoaded: boolean
 }

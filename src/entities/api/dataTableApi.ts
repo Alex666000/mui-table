@@ -1,5 +1,12 @@
 import { instance } from '@/shared/api'
-import { CreateResponseRecord, FetchTableResponse, Record, TableData } from '../model/types'
+import {
+  CreateResponseRecord,
+  FetchTableResponse,
+  GetRequestMethod,
+  PostRequestMethod,
+  Record,
+  TableData,
+} from '../model/types'
 
 const token = localStorage.getItem('authToken')
 
@@ -9,7 +16,7 @@ export const dataTableAPI = {
       '/ru/data/v3/testmethods/docs/userdocs/get',
       {
         headers: { 'x-auth': token },
-      } as ReturnType<typeof instance.get>
+      } as GetRequestMethod
     )
   },
   createRecord(data: Record) {
@@ -18,17 +25,17 @@ export const dataTableAPI = {
       data,
       {
         headers: { 'x-auth': token },
-      } as ReturnType<typeof instance.post>
+      } as PostRequestMethod
     )
   },
   updateRecord(id: string, data: Record) {
     return instance.post(`/ru/data/v3/testmethods/docs/userdocs/set/${id}`, data, {
       headers: { 'x-auth': token },
-    } as ReturnType<typeof instance.post>)
+    } as PostRequestMethod)
   },
   deleteRecord(id: string) {
     return instance.post(`/ru/data/v3/testmethods/docs/userdocs/delete/${id}`, null, {
       headers: { 'x-auth': token },
-    } as ReturnType<typeof instance.post>)
+    } as PostRequestMethod)
   },
 }
