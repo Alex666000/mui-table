@@ -3,7 +3,12 @@
  * Возвращает дату в виде строки формата YYYY-MM-DD
  * @param dateString - строка с датой в ISO формате
  */
-export const formatDateISO = (dateString: string) => {
+export function formatDateISO(dateString: string, isInput: boolean = false): string {
   const date = new Date(dateString)
-  return date.toISOString().split('T')[0] // Возвращаем часть даты без времени
+
+  if (isNaN(date.getTime())) {
+    return '' // Возвращаем пустую строку, если дата некорректна
+  }
+
+  return isInput ? date.toISOString().slice(0, 16) : date.toISOString()
 }

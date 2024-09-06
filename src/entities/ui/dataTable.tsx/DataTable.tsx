@@ -37,8 +37,8 @@ export const DataTable: FC = () => {
     documentName: '',
     companySignatureName: '',
     employeeSignatureName: '',
-    employeeSigDate: new Date().toISOString(),
-    companySigDate: new Date().toISOString(),
+    employeeSigDate: new Date().toISOString().slice(0, 16), // Обеспечиваем корректный формат
+    companySigDate: new Date().toISOString().slice(0, 16), // Обеспечиваем корректный формат
   })
 
   useEffect(() => {
@@ -133,6 +133,7 @@ export const DataTable: FC = () => {
             bgcolor: 'background.paper',
             boxShadow: 24,
             p: 4,
+            width: '400px', // Ширина модального окна
           }}>
           <TextField
             label="Название документа"
@@ -148,10 +149,58 @@ export const DataTable: FC = () => {
             fullWidth
             margin="normal"
           />
-          {/* Другие поля можно добавить аналогичным образом */}
-          <Button variant="contained" color="primary" onClick={handleSaveRecord}>
-            Сохранить
-          </Button>
+          <TextField
+            label="Тип документа"
+            value={newRecord.documentType}
+            onChange={(e) => setNewRecord({ ...newRecord, documentType: e.target.value })}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Статус документа"
+            value={newRecord.documentStatus}
+            onChange={(e) => setNewRecord({ ...newRecord, documentStatus: e.target.value })}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Подпись компании"
+            value={newRecord.companySignatureName}
+            onChange={(e) => setNewRecord({ ...newRecord, companySignatureName: e.target.value })}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Подпись сотрудника"
+            value={newRecord.employeeSignatureName}
+            onChange={(e) => setNewRecord({ ...newRecord, employeeSignatureName: e.target.value })}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Дата подписи компании"
+            type="datetime-local"
+            value={formatDateISO(newRecord.companySigDate)}
+            onChange={(e) => setNewRecord({ ...newRecord, companySigDate: e.target.value })}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Дата подписи сотрудника"
+            type="datetime-local"
+            value={formatDateISO(newRecord.employeeSigDate)}
+            onChange={(e) => setNewRecord({ ...newRecord, employeeSigDate: e.target.value })}
+            fullWidth
+            margin="normal"
+          />
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+            <Button variant="contained" color="primary" onClick={handleSaveRecord}>
+              Сохранить
+            </Button>
+            <Button variant="contained" color="error" onClick={handleModalClose}>
+              Отмена
+            </Button>
+          </Box>
         </Box>
       </Modal>
     </>
