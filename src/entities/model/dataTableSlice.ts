@@ -23,6 +23,15 @@ const slice = createSlice({
     builder.addCase(createRecord.fulfilled, (state: TableState, action) => {
       state.data.push(action.payload)
     })
+    builder.addCase(updateRecord.fulfilled, (state: TableState, action) => {
+      const index = state.data.findIndex((record) => record.id === action.payload.id)
+      if (index > -1) {
+        state.data[index] = action.payload
+      }
+    })
+    builder.addCase(deleteRecord.fulfilled, (state: TableState, action) => {
+      state.data = state.data.filter((record) => record.id !== action.payload.id)
+    })
   },
 })
 
@@ -82,9 +91,49 @@ const createRecord = createAppAsyncThunk<TableData, TableData>(
   }
 )
 
+const updateRecord = createAppAsyncThunk<TableData, { id: string; data: TableData }>(
+  `${slice.name}/updateRecord`,
+  async ({ id, data }, thunkAPI) => {
+    const { dispatch, rejectWithValue } = thunkAPI
+    try {
+      const res = await dataTableAPI.updateRecord(id, data)
+      if (res.status === 200) {
+        dispatch(setAppStatus({ status: 'succeeded' }))
+        return res.data.data
+      } else {
+        dispatch(setAppStatus({ status: 'failed' }))
+        return rejectWithValue(null)
+      }
+    } catch (error: AxiosError) {
+      handleServerNetworkError(error, dispatch)
+      return rejectWithValue(null)
+    }
+  }
+)
+
+const deleteRecord = createAppAsyncThunk<TableData, string>(
+  `${slice.name}/deleteRecord`,
+  async (id, thunkAPI) => {
+    const { dispatch, rejectWithValue } = thunkAPI
+    try {
+      const res = await dataTableAPI.deleteRecord(id)
+      if (res.status === 200) {
+        dispatch(setAppStatus({ status: 'succeeded' }))
+        return { id } // Возвращаем только id удаленной записи
+      } else {
+        dispatch(setAppStatus({ status: 'failed' }))
+        return rejectWithValue(null)
+      }
+    } catch (error: AxiosError) {
+      handleServerNetworkError(error, dispatch)
+      return rejectWithValue(null)
+    }
+  }
+)
+
 export const dataTableReducer = slice.reducer
 export const {} = slice.actions
-export const tablesThunks = { fetchTableData, createRecord }
+export const tablesThunks = { fetchTableData, createRecord, updateRecord, deleteRecord }
 
 // types
 type TableState = {

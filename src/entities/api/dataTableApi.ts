@@ -21,12 +21,12 @@ export const dataTableAPI = {
     )
   },
   updateRecord(id: string, data: Record) {
-    return instance.post(`/userdocs/set/${id}`, data, {
+    return instance.post(`/ru/data/v3/testmethods/docs/userdocs/set/${id}`, data, {
       headers: { 'x-auth': token },
     } as ReturnType<typeof instance.post>)
   },
-  deleteRecord(id: string, token: string) {
-    return instance.post(`/userdocs/delete/${id}`, null, {
+  deleteRecord(id: string) {
+    return instance.post(`/ru/data/v3/testmethods/docs/userdocs/delete/${id}`, null, {
       headers: { 'x-auth': token },
     } as ReturnType<typeof instance.post>)
   },

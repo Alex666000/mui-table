@@ -1,4 +1,4 @@
-const headCells = [
+export const headCells = [
   { id: 'companySigDate', label: 'Дата подписи компании' },
   { id: 'companySignatureName', label: 'Подпись компании' },
   { id: 'documentName', label: 'Название документа' },

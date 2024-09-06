@@ -1,3 +1,4 @@
+// В DataTable.tsx
 import { FC, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { tablesThunks } from '@/entities/model/dataTableSlice'
@@ -18,10 +19,10 @@ import { EmptyIcon } from '@/shared/assets/icons/EmptyIcon'
 import { formatDateISO } from '@/entities/model/utils/formatDateISO'
 import Button from '@mui/material/Button'
 import { AddRecordModal } from '@/entities/ui/AddRecordModal'
+import { headCells } from '@/entities/model/const/headCells'
 
 export const DataTable: FC = () => {
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const isLoggedIn = useSelector(selectIsLoggedIn)
   const tableData = useSelector(selectDataTable)
   const status = useSelector(selectAppStatus)
@@ -51,8 +52,13 @@ export const DataTable: FC = () => {
     }
   }, [status, dispatch])
 
-  const handleDelete = (id: string) => {
-    // dispatch(tablesThunks.deleteRecord(id))
+  const handleDelete = async (id: string) => {
+    try {
+      await dispatch(tablesThunks.deleteRecord(id))
+      dispatch(tablesThunks.fetchTableData()) // Обновляем таблицу после удаления
+    } catch (error) {
+      console.error('Failed to delete the record:', error)
+    }
   }
 
   const handleAdd = () => {
@@ -95,7 +101,7 @@ export const DataTable: FC = () => {
       <TableCell align={'left'}>{formatDateISO(row.employeeSigDate)}</TableCell>
       <TableCell align={'left'}>{row.employeeSignatureName}</TableCell>
       <TableCell align={'left'}>
-        <IconButton onClick={() => navigate(`/learn/${row.id}`)} sx={{ padding: '6px' }}>
+        <IconButton sx={{ padding: '6px' }}>
           <BorderColorOutlinedIcon />
         </IconButton>
         <IconButton onClick={() => handleDelete(row.id)} sx={{ padding: '6px' }}>
@@ -107,20 +113,7 @@ export const DataTable: FC = () => {
 
   return (
     <>
-      <EnhancedTableContent
-        headCells={[
-          { id: 'companySigDate', label: 'Дата подписи компании' },
-          { id: 'companySignatureName', label: 'Подпись компании' },
-          { id: 'documentName', label: 'Название документа' },
-          { id: 'documentStatus', label: 'Статус документа' },
-          { id: 'documentType', label: 'Тип документа' },
-          { id: 'employeeNumber', label: 'Номер сотрудника' },
-          { id: 'employeeSigDate', label: 'Дата подписи сотрудника' },
-          { id: 'employeeSignatureName', label: 'Подпись сотрудника' },
-          { id: 'actions', label: 'Действия' },
-        ]}
-        pageCount={20}
-        status={status as RequestStatus}>
+      <EnhancedTableContent headCells={headCells} pageCount={20} status={status as RequestStatus}>
         {tableItems}
       </EnhancedTableContent>
       {!(tableData as TableData[]).length && (
