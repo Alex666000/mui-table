@@ -57,7 +57,7 @@ export const DataTable: FC = () => {
       await dispatch(tablesThunks.deleteRecord(id))
       dispatch(tablesThunks.fetchTableData()) // Обновляем таблицу после удаления
     } catch (error) {
-      console.error('Failed to delete the record:', error)
+      // console.error('Failed to delete the record:', error)
     }
   }
 
