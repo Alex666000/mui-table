@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Modal, Box, TextField, Button } from '@mui/material'
+import { Box, Button, Modal, TextField } from '@mui/material'
 import { TableData } from '@/entities/api/dataTableApi'
 import { formatDateISO } from '@/entities/model/utils/formatDateISO'
 

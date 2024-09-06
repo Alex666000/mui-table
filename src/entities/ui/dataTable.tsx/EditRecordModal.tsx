@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { Modal, Box, TextField, Button } from '@mui/material'
-import { TableData } from '@/entities/api/dataTableApi'
-import { formatDateISO } from '@/entities/model/utils/formatDateISO'
+import { TableData } from '../../api/dataTableApi'
+import { formatDateISO } from '../../model/utils/formatDateISO'
 
 interface EditRecordModalProps {
   open: boolean

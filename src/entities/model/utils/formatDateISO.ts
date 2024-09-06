@@ -1,8 +1,3 @@
-/**
- * Функция для форматирования даты в формате ISO 8601
- * Возвращает дату в виде строки формата YYYY-MM-DD
- * @param dateString - строка с датой в ISO формате
- */
 export function formatDateISO(dateString: string, isInput: boolean = false): string {
   const date = new Date(dateString)
 
@@ -10,5 +5,11 @@ export function formatDateISO(dateString: string, isInput: boolean = false): str
     return '' // Возвращаем пустую строку, если дата некорректна
   }
 
-  return isInput ? date.toISOString().slice(0, 16) : date.toISOString()
+  // Если дата предназначена для отображения в input (формат YYYY-MM-DDTHH:mm)
+  if (isInput) {
+    return date.toISOString().slice(0, 16) // Обрезаем до даты и времени
+  }
+
+  // Формат для отображения (например, локализованный формат)
+  return date.toLocaleString() // Локализованная строка даты и времени
 }

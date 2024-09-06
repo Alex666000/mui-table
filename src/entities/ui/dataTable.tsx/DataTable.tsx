@@ -1,4 +1,3 @@
-// В DataTable.tsx
 import { FC, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { tablesThunks } from '@/entities/model/dataTableSlice'
