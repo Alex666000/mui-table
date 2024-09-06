@@ -5,14 +5,12 @@ import { selectDataTable } from '@/entities/model/dataTableSelectors'
 import { selectIsLoggedIn } from '@/features/auth/model/selectors/auth.selectors'
 import TableRow from '@mui/material/TableRow'
 import TableCell from '@mui/material/TableCell'
-import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import { useNavigate } from 'react-router-dom'
 import { selectAppStatus } from '@/app/model/appSelectors'
 import { TableData } from '@/entities/api/dataTableApi'
-import Button from '@mui/material/Button'
 import { EnhancedTableContent } from '@/entities/ui/dataTable.tsx/EnhancedTableContent'
 import { RequestStatus } from '@/app/model/appReducer'
 import { NotFindAnything } from '@/entities/ui/dataTable.tsx/NotFindAnything'
@@ -85,7 +83,7 @@ export const DataTable: FC = () => {
       {!(tableData as TableData[]).length && (
         <NotFindAnything status={status as RequestStatus} value="Данные" />
       )}
-      {status === 'succeeded' && <EmptyIcon />}
+      {status === 'failed' && <EmptyIcon />}
     </>
   )
 }
