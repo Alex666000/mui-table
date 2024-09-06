@@ -42,16 +42,10 @@ export const DataTable: FC = () => {
   } = useRecordManagement()
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn || status === 'succeeded') {
       dispatch(tablesThunks.fetchTableData())
     }
-  }, [isLoggedIn, dispatch])
-
-  useEffect(() => {
-    if (status === 'succeeded') {
-      dispatch(tablesThunks.fetchTableData())
-    }
-  }, [status, dispatch])
+  }, [isLoggedIn, status, dispatch])
 
   const handleDelete = async (id: string) => {
     try {
