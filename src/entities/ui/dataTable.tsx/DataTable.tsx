@@ -17,7 +17,7 @@ import { NotFindAnything } from '@/entities/ui/dataTable.tsx/NotFindAnything'
 import { EmptyIcon } from '@/shared/assets/icons/EmptyIcon'
 import { formatDateISO } from '@/entities/model/utils/formatDateISO'
 import Button from '@mui/material/Button'
-import { Modal, Box, TextField } from '@mui/material'
+import { AddRecordModal } from '@/entities/ui/AddRecordModal'
 
 export const DataTable: FC = () => {
   const dispatch = useDispatch()
@@ -26,9 +26,7 @@ export const DataTable: FC = () => {
   const tableData = useSelector(selectDataTable)
   const status = useSelector(selectAppStatus)
 
-  // Модальное окно для добавления записи
   const [isAddModalOpen, setAddModalOpen] = useState(false)
-
   const [newRecord, setNewRecord] = useState<TableData>({
     id: `${Math.random()}`, // временный ID, генерируется локально
     documentStatus: '',
@@ -37,8 +35,8 @@ export const DataTable: FC = () => {
     documentName: '',
     companySignatureName: '',
     employeeSignatureName: '',
-    employeeSigDate: new Date().toISOString().slice(0, 16), // Обеспечиваем корректный формат
-    companySigDate: new Date().toISOString().slice(0, 16), // Обеспечиваем корректный формат
+    employeeSigDate: new Date().toISOString().slice(0, 16),
+    companySigDate: new Date().toISOString().slice(0, 16),
   })
 
   useEffect(() => {
@@ -46,6 +44,12 @@ export const DataTable: FC = () => {
       dispatch(tablesThunks.fetchTableData())
     }
   }, [isLoggedIn, dispatch])
+
+  useEffect(() => {
+    if (status === 'succeeded') {
+      dispatch(tablesThunks.fetchTableData())
+    }
+  }, [status, dispatch])
 
   const handleDelete = (id: string) => {
     // dispatch(tablesThunks.deleteRecord(id))
@@ -59,20 +63,25 @@ export const DataTable: FC = () => {
     setAddModalOpen(false)
   }
 
-  const handleSaveRecord = () => {
-    dispatch(tablesThunks.createRecord(newRecord))
-    setAddModalOpen(false)
-    setNewRecord({
-      id: `${Math.random()}`,
-      documentStatus: '',
-      employeeNumber: '',
-      documentType: '',
-      documentName: '',
-      companySignatureName: '',
-      employeeSignatureName: '',
-      employeeSigDate: new Date().toISOString(),
-      companySigDate: new Date().toISOString(),
-    })
+  const handleSaveRecord = async (record: TableData) => {
+    try {
+      await dispatch(tablesThunks.createRecord(record)).unwrap()
+      dispatch(tablesThunks.fetchTableData()) // Перезагружаем данные
+    } catch (error) {
+    } finally {
+      setAddModalOpen(false)
+      setNewRecord({
+        id: `${Math.random()}`,
+        documentStatus: '',
+        employeeNumber: '',
+        documentType: '',
+        documentName: '',
+        companySignatureName: '',
+        employeeSignatureName: '',
+        employeeSigDate: new Date().toISOString(),
+        companySigDate: new Date().toISOString(),
+      })
+    }
   }
 
   const tableItems = (tableData as TableData[]).map((row, index) => (
@@ -122,87 +131,13 @@ export const DataTable: FC = () => {
       </Button>
       {status === 'failed' && <EmptyIcon />}
 
-      {/* Модальное окно для добавления записи */}
-      <Modal open={isAddModalOpen} onClose={handleModalClose}>
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            bgcolor: 'background.paper',
-            boxShadow: 24,
-            p: 4,
-            width: '400px', // Ширина модального окна
-          }}>
-          <TextField
-            label="Название документа"
-            value={newRecord.documentName}
-            onChange={(e) => setNewRecord({ ...newRecord, documentName: e.target.value })}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Номер сотрудника"
-            value={newRecord.employeeNumber}
-            onChange={(e) => setNewRecord({ ...newRecord, employeeNumber: e.target.value })}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Тип документа"
-            value={newRecord.documentType}
-            onChange={(e) => setNewRecord({ ...newRecord, documentType: e.target.value })}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Статус документа"
-            value={newRecord.documentStatus}
-            onChange={(e) => setNewRecord({ ...newRecord, documentStatus: e.target.value })}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Подпись компании"
-            value={newRecord.companySignatureName}
-            onChange={(e) => setNewRecord({ ...newRecord, companySignatureName: e.target.value })}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Подпись сотрудника"
-            value={newRecord.employeeSignatureName}
-            onChange={(e) => setNewRecord({ ...newRecord, employeeSignatureName: e.target.value })}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Дата подписи компании"
-            type="datetime-local"
-            value={formatDateISO(newRecord.companySigDate)}
-            onChange={(e) => setNewRecord({ ...newRecord, companySigDate: e.target.value })}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Дата подписи сотрудника"
-            type="datetime-local"
-            value={formatDateISO(newRecord.employeeSigDate)}
-            onChange={(e) => setNewRecord({ ...newRecord, employeeSigDate: e.target.value })}
-            fullWidth
-            margin="normal"
-          />
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-            <Button variant="contained" color="primary" onClick={handleSaveRecord}>
-              Сохранить
-            </Button>
-            <Button variant="contained" color="error" onClick={handleModalClose}>
-              Отмена
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
+      <AddRecordModal
+        open={isAddModalOpen}
+        onClose={handleModalClose}
+        onSave={handleSaveRecord}
+        newRecord={newRecord}
+        setNewRecord={setNewRecord}
+      />
     </>
   )
 }
