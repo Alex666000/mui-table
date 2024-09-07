@@ -1,5 +1,5 @@
 import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar'
-import { SyntheticEvent } from 'react'
+import { ReactElement, SyntheticEvent } from 'react'
 import Alert from '@mui/material/Alert'
 import { Slide } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '@/app/providers/store/store'
