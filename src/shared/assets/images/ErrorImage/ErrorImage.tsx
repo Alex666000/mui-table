@@ -1,8 +1,12 @@
-import './Error.css'
+import './Error.scss'
 
 export const ErrorImage = () => {
   return (
-    <svg className={'svg'} id={'404-Dave'} viewBox={'0 0 560 250'} xmlns={'http://www.w3.org/2000/svg'}>
+    <svg
+      className={'svg'}
+      id={'404-Dave'}
+      viewBox={'0 0 560 250'}
+      xmlns={'http://www.w3.org/2000/svg'}>
       <defs>
         <clipPath id={'center-circle-clip'}>
           <circle cx={'275.667'} cy={'122.667'} r={'84.33'} />
@@ -10,7 +14,9 @@ export const ErrorImage = () => {
       </defs>
       <g id={'bg'}>
         <path
-          d={'M275.7 207c-46.5 0-84.3-37.8-84.3-84.3s37.8-84.3 84.3-84.3S360 76.2 360 122.7 322.2 207 275.7 207z'}
+          d={
+            'M275.7 207c-46.5 0-84.3-37.8-84.3-84.3s37.8-84.3 84.3-84.3S360 76.2 360 122.7 322.2 207 275.7 207z'
+          }
           fill={'#366EFF'}
           id={'Bg-green'}
         />
@@ -90,7 +96,9 @@ export const ErrorImage = () => {
           <g id={'Ears'}>
             <g id={'Ear-right'}>
               <path
-                d={'M314.8 130.2c-5.5 0-9.9-4.4-9.9-9.9s4.4-9.9 9.9-9.9 9.9 4.4 9.9 9.9-4.5 9.9-9.9 9.9z'}
+                d={
+                  'M314.8 130.2c-5.5 0-9.9-4.4-9.9-9.9s4.4-9.9 9.9-9.9 9.9 4.4 9.9 9.9-4.5 9.9-9.9 9.9z'
+                }
                 fill={'#B6CFD8'}
                 id={'Ear-fill-right'}
               />
@@ -104,7 +112,9 @@ export const ErrorImage = () => {
             </g>
             <g id={'Ear-left'}>
               <path
-                d={'M234.8 130.2c-5.5 0-9.9-4.4-9.9-9.9s4.4-9.9 9.9-9.9 9.9 4.4 9.9 9.9-4.5 9.9-9.9 9.9z'}
+                d={
+                  'M234.8 130.2c-5.5 0-9.9-4.4-9.9-9.9s4.4-9.9 9.9-9.9 9.9 4.4 9.9 9.9-4.5 9.9-9.9 9.9z'
+                }
                 fill={'#E1EDF4'}
                 id={'Ear-fill-left'}
               />
@@ -183,7 +193,9 @@ export const ErrorImage = () => {
               id={'beard-innershadow'}
             />
             <path
-              d={'M297 142c-3-7-9.1-11.3-16-13-.9 2.1-3 3.4-5.5 3.4s-4.5-1.3-5.3-3.4c-7.1 1.6-13.1 6-16.1 13v1h43v-1z'}
+              d={
+                'M297 142c-3-7-9.1-11.3-16-13-.9 2.1-3 3.4-5.5 3.4s-4.5-1.3-5.3-3.4c-7.1 1.6-13.1 6-16.1 13v1h43v-1z'
+              }
               fill={'#2D495E'}
               id={'moustache'}
             />

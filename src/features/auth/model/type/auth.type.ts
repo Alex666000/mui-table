@@ -14,7 +14,7 @@ export type BadRequest = BaseResponse & {
   error_text: string
 }
 
-// params types
+// params type
 export type LoginParams = {
   email: string
   password: string

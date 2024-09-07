@@ -1,14 +1,15 @@
-import { SetStateAction } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 import { Box, Button, Modal, TextField } from '@mui/material'
 import { formatDateISO } from '../../model/utils'
 import { TableData } from '../../model/types'
+import { ReturnComponent } from '@/shared/types'
 
 type AddRecordModalProps = {
   open: boolean
   onClose: () => void
   onSave: (record: TableData) => void
   newRecord: TableData
-  setNewRecord: React.Dispatch<SetStateAction<TableData>>
+  setNewRecord: Dispatch<SetStateAction<TableData>>
 }
 
 export const AddRecordModal = ({
@@ -17,7 +18,7 @@ export const AddRecordModal = ({
   onSave,
   newRecord,
   setNewRecord,
-}: AddRecordModalProps) => {
+}: AddRecordModalProps): ReturnComponent => {
   return (
     <Modal open={open} onClose={onClose}>
       <Box

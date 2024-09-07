@@ -1,11 +1,12 @@
 import { RequestStatus } from '@/app/model/appReducer'
+import { ReturnComponent } from '@/shared/types'
 
 type Props = {
   status: RequestStatus
   value: string
 }
 
-export const NotFindAnything = ({ status, value }: Props) => {
+export const NotFindAnything = ({ status, value }: Props): ReturnComponent => {
   return (
     <div style={{ marginBottom: '25px' }}>
       {status !== 'loading' && (

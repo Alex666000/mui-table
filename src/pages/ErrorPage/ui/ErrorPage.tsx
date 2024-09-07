@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 
 import Button from '@mui/material/Button'
-import Grid from '@mui/material/Grid'
+import Grid from '@mui/material/Grid2'
 import Typography from '@mui/material/Typography'
 import { ErrorImage } from '@/shared/assets/images/ErrorImage/ErrorImage'
 import { ROUTES } from '@/shared/constants/paths'
@@ -9,8 +9,6 @@ import { ROUTES } from '@/shared/constants/paths'
 export const ErrorPage = () => {
   const navigate = useNavigate()
 
-  // Grid - контейнер сетка внутри которой дочерние элементы - кол-во колонок можем задавать (12 по умолчанию)
-  // spacing расстояние между дочерними элементами
   return (
     <Grid
       alignItems={'center'}

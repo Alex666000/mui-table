@@ -20,8 +20,9 @@ import { TableData } from '../../model/types'
 import { useRecordManagement } from '@/entities/model/hooks'
 import { tablesThunks } from '../../model/slice'
 import { headCells } from '../../model/const'
+import { ReturnComponent } from '@/shared/types'
 
-export const DataTable = () => {
+export const DataTable = (): ReturnComponent => {
   const dispatch = useDispatch()
   const isLoggedIn = useSelector(selectIsLoggedIn)
   const tableData = useSelector(selectDataTable)

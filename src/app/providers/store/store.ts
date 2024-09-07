@@ -1,5 +1,5 @@
 import { combineReducers, configureStore, ThunkDispatch, UnknownAction } from '@reduxjs/toolkit'
-import { appReducer } from '@/app/model/appReducer'
+import { appReducer } from '../../model'
 import { useDispatch, useSelector } from 'react-redux'
 import { authReducer } from '@/features/auth/model/slice/authSlice'
 import { dataTableReducer } from '@/entities/model/slice/dataTableSlice'

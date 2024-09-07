@@ -1,8 +1,7 @@
 import { ChangeEvent, FC, useState, FocusEvent } from 'react'
 import TextField from '@mui/material/TextField'
-import { EyeIcon } from '@/shared/ui/EyeIcon/EyeIcon'
-import { styled } from '@mui/material/styles'
-import Typography from '@mui/material/Typography'
+import { Undefinable } from '@/shared/types/undefinable'
+import { EyeIcon } from '@/shared/ui/EyeIcon'
 
 type PasswordInputPropsType = {
   type?: 'password'
@@ -13,23 +12,12 @@ type PasswordInputPropsType = {
   onChange?: (e: ChangeEvent<any>) => void
   onBlur?: (e: FocusEvent<any>) => void
   error?: false | boolean | undefined | string
-  helperText?: string | undefined
+  helperText?: Undefinable<string>
   eye?: boolean // должен ли быть глаз возле инпута, переключающий типы text/password
 }
 
 export const PasswordInput: FC<PasswordInputPropsType> = (props) => {
-  const {
-    label,
-    margin,
-    name,
-    type,
-    helperText,
-    error,
-    value,
-    onChange,
-    onBlur,
-    eye = false,
-  } = props
+  const { label, margin, name, helperText, error, value, onChange, onBlur, eye = false } = props
 
   // Используем начальное значение false, чтобы начинать с type='password'
   const [typeText, setTypeText] = useState(false)

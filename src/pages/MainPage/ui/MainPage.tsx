@@ -5,8 +5,9 @@ import { Navigate } from 'react-router-dom'
 import { selectAppStatus } from '@/app/model/appSelectors'
 import LinearProgress from '@mui/material/LinearProgress'
 import { DataTable } from '@/entities/ui'
+import { ReturnComponent } from '@/shared/types'
 
-export const MainPage = () => {
+export const MainPage = (): ReturnComponent => {
   const isLoggedIn = useSelector(selectIsLoggedIn)
   const status = useSelector(selectAppStatus)
 

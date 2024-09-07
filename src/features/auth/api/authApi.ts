@@ -1,5 +1,5 @@
 import { instance } from '@/shared/api'
-import { LoginParams, LoginSuccessResponse } from '@/features/auth/model/type'
+import { LoginParams, LoginSuccessResponse } from '../model/type'
 
 export const authAPI = {
   login(data: LoginParams) {

@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { Nullable } from '@/shared/types/nullable'
 
 const initialState = {
   // происходитли сейчас взаимодействие с сервером
   status: '' as RequestStatus,
   // если ошибка глобальная - запишем текст ошибки сюда
-  error: null as string | null,
+  error: null as Nullable<string>,
   // флаг инициализации приложения
   isInitialized: false,
 }

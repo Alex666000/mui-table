@@ -1,24 +1,25 @@
-import { FC } from 'react'
+import { ReactNode } from 'react'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableContainer from '@mui/material/TableContainer'
 import { TableSkeleton } from '@/shared/ui/TableSkeleton/TableSkeleton'
-import { EnhancedTableHead, HeadCellType } from '@/entities/ui/dataTable.tsx/EnhancedTableHead'
 import { RequestStatus } from '@/app/model/appReducer'
+import { ReturnComponent } from '@/shared/types'
+import { EnhancedTableHead, HeadCellType } from './EnhancedTableHead'
 
 type TableContentPropsType = {
-  children?: JSX.Element[]
+  children?: ReactNode[]
   headCells: HeadCellType[]
   pageCount: number
   status: RequestStatus
 }
-export const EnhancedTableContent: FC<TableContentPropsType> = ({
+export const EnhancedTableContent = ({
   children,
   headCells,
   pageCount,
   status,
-}) => {
+}: TableContentPropsType): ReturnComponent => {
   return (
     <Paper sx={{ mb: 2, width: '100%' }}>
       <TableContainer>

@@ -3,7 +3,7 @@ import { setAppInitialized, setAppStatus } from '@/app/model/appReducer'
 import { authAPI } from '../../api'
 import { createAppAsyncThunk } from '@/shared/utils'
 import { handleServerAppError, handleServerNetworkError } from '@/shared/utils/error-utils'
-import { LoginParams } from '@/features/auth/model/type'
+import { LoginParams } from '../type'
 import { ResultCode } from '@/shared/constants'
 
 const slice = createSlice({
@@ -60,5 +60,5 @@ const login = createAppAsyncThunk<{ isLoggedIn: boolean; token: string }, LoginP
 )
 
 export const authReducer = slice.reducer
-export const { setIsLoggedIn, logout } = slice.actions
+export const { logout } = slice.actions
 export const authThunks = { login }

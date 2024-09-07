@@ -1,23 +1,24 @@
-import { FC } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 import { Modal, Box, TextField, Button } from '@mui/material'
-import { TableData } from '../../api/dataTableApi'
 import { formatDateISO } from '../../model/utils/formatDateISO'
+import { TableData } from '../../model/types'
+import { ReturnComponent } from '@/shared/types'
 
 interface EditRecordModalProps {
   open: boolean
   onClose: () => void
   onSave: (record: TableData) => void
   record: TableData
-  setRecord: React.Dispatch<React.SetStateAction<TableData>>
+  setRecord: Dispatch<SetStateAction<TableData>>
 }
 
-export const EditRecordModal: FC<EditRecordModalProps> = ({
+export const EditRecordModal = ({
   open,
   onClose,
   onSave,
   record,
   setRecord,
-}) => {
+}: EditRecordModalProps): ReturnComponent => {
   return (
     <Modal open={open} onClose={onClose}>
       <Box

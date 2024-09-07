@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { tablesThunks } from '../../model/slice'
 import { TableData } from '../../model/types'
+import { Nullable } from '@/shared/types/nullable'
 
 export const useRecordManagement = () => {
   const dispatch = useDispatch()
@@ -18,7 +19,7 @@ export const useRecordManagement = () => {
     employeeSigDate: new Date().toISOString().slice(0, 16),
     companySigDate: new Date().toISOString().slice(0, 16),
   })
-  const [editRecord, setEditRecord] = useState<TableData | null>(null)
+  const [editRecord, setEditRecord] = useState<Nullable<TableData>>(null)
 
   const handleAdd = () => setAddModalOpen(true)
 
