@@ -39,3 +39,16 @@ export const dataTableAPI = {
     } as PostRequestMethod)
   },
 }
+
+// types
+export type CreateRecordResError<D> = {
+  errors: D
+  type: string
+  title: string
+  status: number
+  traceId: string
+}
+export type CreateError = {
+  documentName: string[]
+  documentStatus: string[]
+}

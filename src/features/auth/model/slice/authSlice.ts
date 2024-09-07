@@ -5,6 +5,7 @@ import { createAppAsyncThunk } from '@/shared/utils'
 import { handleServerAppError, handleServerNetworkError } from '@/shared/utils/error-utils'
 import { LoginParams } from '../type'
 import { ResultCode } from '@/shared/constants'
+import { AxiosError } from 'axios/index'
 
 const slice = createSlice({
   name: 'auth',
@@ -50,9 +51,11 @@ const login = createAppAsyncThunk<{ isLoggedIn: boolean; token: string }, LoginP
           return rejectWithValue(res.data)
         }
       }
-    } catch (error) {
-      handleServerNetworkError(error, dispatch)
-      return rejectWithValue(null)
+    } catch (error: AxiosError) {
+      if (error) {
+        handleServerNetworkError(error, dispatch)
+        return rejectWithValue(null)
+      }
     } finally {
       dispatch(setAppInitialized({ isInitialized: true }))
     }

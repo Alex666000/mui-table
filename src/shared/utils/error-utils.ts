@@ -4,6 +4,7 @@ import { ThunkDispatch, UnknownAction } from '@reduxjs/toolkit'
 import { BadRequest } from '@/features/auth/model/type'
 import { ResultCode } from '../constants'
 import axios from 'axios'
+import { CreateRecordResError, CreateError } from '@/entities/api'
 
 /**
  * Обрабатывает ошибки, полученные от сервера, и обновляет статус приложения.
@@ -17,13 +18,14 @@ export const handleServerAppError = (
   isShowGlobalError: boolean = true
 ) => {
   if (isShowGlobalError) {
+    debugger
     dispatch(
       setAppError({
         error: data.error_code !== ResultCode.Success ? data.error_text : 'Some error occurred',
       })
     )
   }
-
+  debugger
   dispatch(setAppStatus({ status: 'failed' }))
 }
 
@@ -39,8 +41,8 @@ export const handleServerNetworkError = (
   let errorMessage = 'Connection error'
 
   if (axios.isAxiosError(error)) {
-    // ⏺️ err?.message - например при логинизации в "offline" режиме
-    errorMessage = error.response?.data?.message || error?.message || errorMessage
+    debugger
+    errorMessage = error.response?.data?.errors.documentName[0]
     // ❗ Проверка на наличие нативной ошибки - например "мапимся" по массиву "undefined"
   } else if (error instanceof Error) {
     errorMessage = `Native error: ${error.message}`
@@ -50,6 +52,6 @@ export const handleServerNetworkError = (
     errorMessage = JSON.stringify(error)
   }
 
-  dispatch(setAppError({ error: error.message ? error.message : errorMessage }))
+  dispatch(setAppError({ error: errorMessage }))
   dispatch(setAppStatus({ status: 'failed' }))
 }

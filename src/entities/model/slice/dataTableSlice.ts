@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { createAppAsyncThunk, handleServerNetworkError } from '@/shared/utils'
+import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError } from '@/shared/utils'
 import { setAppStatus } from '@/app/model/appReducer'
 import { dataTableAPI } from '../../api'
 import { AxiosError } from 'axios'
@@ -55,7 +55,7 @@ const fetchTableData = createAppAsyncThunk<{ tableData: TableData[] }, void>(
           return { tableData: res.data.data }
         } else {
           if (res.data.error_code === ResultCode.BadRequest) {
-            dispatch(setAppStatus({ status: 'failed' }))
+            handleServerAppError(res.data, dispatch)
             return rejectWithValue(null)
           }
         }
@@ -78,16 +78,20 @@ const createRecord = createAppAsyncThunk<TableData, TableData>(
     const { dispatch, rejectWithValue } = thunkAPI
     try {
       const res = await dataTableAPI.createRecord(newRecord)
-      if (res.status === 200) {
+      if (res.data.error_code === ResultCode.Success) {
         dispatch(setAppStatus({ status: 'succeeded' }))
         return res.data.data
       } else {
-        dispatch(setAppStatus({ status: 'failed' }))
-        return rejectWithValue(null)
+        if (res.data.error_code === ResultCode.BadRequest) {
+          handleServerAppError(res.data, dispatch)
+          return rejectWithValue(null)
+        }
       }
     } catch (error: AxiosError) {
-      handleServerNetworkError(error, dispatch)
-      return rejectWithValue(null)
+      if (error) {
+        handleServerNetworkError(error, dispatch)
+        return rejectWithValue(null)
+      }
     }
   }
 )
@@ -98,16 +102,20 @@ const updateRecord = createAppAsyncThunk<TableData, { id: string; data: TableDat
     const { dispatch, rejectWithValue } = thunkAPI
     try {
       const res = await dataTableAPI.updateRecord(id, data)
-      if (res.status === 200) {
+      if (res.data.error_code === ResultCode.Success) {
         dispatch(setAppStatus({ status: 'succeeded' }))
         return res.data.data
       } else {
-        dispatch(setAppStatus({ status: 'failed' }))
-        return rejectWithValue(null)
+        if (res.data.error_code === ResultCode.BadRequest) {
+          dispatch(setAppStatus({ status: 'failed' }))
+          return rejectWithValue(null)
+        }
       }
     } catch (error: AxiosError) {
-      handleServerNetworkError(error, dispatch)
-      return rejectWithValue(null)
+      if (error) {
+        handleServerNetworkError(error, dispatch)
+        return rejectWithValue(null)
+      }
     }
   }
 )
@@ -118,16 +126,20 @@ const deleteRecord = createAppAsyncThunk<TableData, string>(
     const { dispatch, rejectWithValue } = thunkAPI
     try {
       const res = await dataTableAPI.deleteRecord(id)
-      if (res.status === 200) {
+      if (res.data.error_code === ResultCode.Success) {
         dispatch(setAppStatus({ status: 'succeeded' }))
         return { id } // Возвращаем только id удаленной записи
       } else {
-        dispatch(setAppStatus({ status: 'failed' }))
-        return rejectWithValue(null)
+        if (res.data.error_code === ResultCode.BadRequest) {
+          dispatch(setAppStatus({ status: 'failed' }))
+          return rejectWithValue(null)
+        }
       }
     } catch (error: AxiosError) {
-      handleServerNetworkError(error, dispatch)
-      return rejectWithValue(null)
+      if (error) {
+        handleServerNetworkError(error, dispatch)
+        return rejectWithValue(null)
+      }
     }
   }
 )
