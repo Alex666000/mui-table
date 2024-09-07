@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { setAppInitialized, setAppStatus } from '@/app/model/appReducer'
+import { setAppError, setAppInitialized, setAppStatus } from '@/app/model/appReducer'
 import { authAPI } from '../../api'
 import { createAppAsyncThunk } from '@/shared/utils'
 import { handleServerAppError, handleServerNetworkError } from '@/shared/utils/error-utils'
 import { LoginParams } from '../type'
 import { ResultCode } from '@/shared/constants'
 import { AxiosError } from 'axios/index'
+import axios from 'axios'
 
 const slice = createSlice({
   name: 'auth',
@@ -53,7 +54,24 @@ const login = createAppAsyncThunk<{ isLoggedIn: boolean; token: string }, LoginP
       }
     } catch (error: AxiosError) {
       if (error) {
-        handleServerNetworkError(error, dispatch)
+        let errorMessage = 'Connection error'
+
+        if (axios.isAxiosError(error)) {
+          debugger
+          // ⏺️ err?.message - например при логинизации в "offline" режиме
+          errorMessage = error.response?.data?.message || error?.message || errorMessage
+          // ❗ Проверка на наличие нативной ошибки - например "мапимся" по массиву "undefined"
+        } else if (error instanceof Error) {
+          errorMessage = `Native error: ${error.message}`
+          // ❗ Какой-то другой непонятный кейс
+        } else {
+          debugger
+          // переводим объект в строку
+          errorMessage = JSON.stringify(error)
+        }
+
+        dispatch(setAppError({ error: error.message ? error.message : errorMessage }))
+        dispatch(setAppStatus({ status: 'failed' }))
         return rejectWithValue(null)
       }
     } finally {

@@ -143,7 +143,6 @@ const updateRecord = createAppAsyncThunk<TableData, { id: string; data: TableDat
         }
       }
     } catch (error: AxiosError) {
-      handleServerNetworkError(error, dispatch)
       return rejectWithValue(null)
     }
   }

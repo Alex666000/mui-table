@@ -22,12 +22,18 @@ export const LoginPage = () => {
   const formik = useFormik({
     validate: (values) => {
       const errors: { email?: string; password?: string } = {}
+
+      // Регулярное выражение для проверки формата: любые буквы + число в конце
       if (!values.email) {
         errors.email = 'Email is required'
+      } else if (!/^[a-zA-Z]+\d+$/.test(values.email)) {
+        errors.email = 'The name must be in English in the format: user{N} e.g. user13'
       }
+
       if (!values.password) {
         errors.password = 'Password is required'
       }
+
       return errors
     },
     initialValues: {
@@ -50,7 +56,7 @@ export const LoginPage = () => {
       title={'Sign in'}
       titleButton={'Sign in'}>
       <TextField
-        label="Email"
+        label="Username"
         margin="normal"
         name="email"
         value={formik.values.email}
@@ -77,7 +83,28 @@ export const LoginPage = () => {
         eye={true}
       />
       <Button
-        sx={{ margin: '0 auto' }}
+        sx={{
+          margin: '0 auto',
+          backgroundColor:
+            status === 'loading' ||
+            !formik.values.email ||
+            !formik.values.password ||
+            !!formik.errors.email ||
+            !!formik.errors.password
+              ? 'grey'
+              : 'primary.main',
+          color: 'white',
+          '&:hover': {
+            backgroundColor:
+              status === 'loading' ||
+              !formik.values.email ||
+              !formik.values.password ||
+              !!formik.errors.email ||
+              !!formik.errors.password
+                ? 'darkgrey'
+                : 'primary.dark',
+          },
+        }}
         disabled={
           !formik.values.email ||
           !formik.values.password ||

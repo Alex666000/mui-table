@@ -48,7 +48,6 @@ export const handleServerNetworkError = (
     errorMessage = `Native error: ${error.message}`
     // ❗ Какой-то другой непонятный кейс
   } else {
-    debugger
     // переводим объект в строку
     errorMessage = JSON.stringify(error)
   }
