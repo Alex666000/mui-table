@@ -34,22 +34,37 @@ export const handleServerAppError = (
  * @param {object} error - Объект ошибки, содержащий сообщение об ошибке.
  * @param {ThunkDispatch<AppRootState, unknown, UnknownAction>} dispatch - Диспетчер Redux для изменения состояния приложения.
  */
-export const handleServerNetworkError = (
-  error: { message: string },
-  dispatch: ThunkDispatch<AppRootState, unknown, UnknownAction>
-) => {
-  let errorMessage = 'Connection error'
+export const handleServerNetworkError = (error: unknown, dispatch: AppDispatch) => {
+  let errorMessage
 
   if (axios.isAxiosError(error)) {
-    debugger
-    errorMessage = `${error.response?.data?.errors.documentName[0]} And ${error.response?.data?.errors.documentStatus[0]}`
-    // ❗ Проверка на наличие нативной ошибки - например "мапимся" по массиву "undefined"
+    const axiosError = error as axios.AxiosError
+
+    // Проверка наличия ошибок в ответе сервера
+    if (axiosError.response?.data) {
+      const responseData = axiosError.response.data as CreateRecordResError<CreateError> | unknown
+      if (responseData.errors) {
+        const documentNameError = responseData.errors.documentName?.[0]
+        const documentStatusError = responseData.errors.documentStatus?.[0]
+
+        // Формируем сообщение об ошибке
+        if (documentNameError && documentStatusError) {
+          errorMessage = `${documentNameError} And ${documentStatusError}`
+        } else if (documentNameError) {
+          errorMessage = documentNameError
+        } else if (documentStatusError) {
+          errorMessage = documentStatusError
+        }
+      } else {
+        errorMessage = responseData.error_text || 'Server error'
+      }
+    } else {
+      errorMessage = 'Server error'
+    }
   } else if (error instanceof Error) {
     errorMessage = `Native error: ${error.message}`
-    // ❗ Какой-то другой непонятный кейс
   } else {
-    // переводим объект в строку
-    errorMessage = JSON.stringify(error)
+    errorMessage = `Unknown error: ${JSON.stringify(error)}`
   }
 
   dispatch(setAppError({ error: errorMessage }))

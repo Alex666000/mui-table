@@ -89,6 +89,8 @@ const createRecord = createAppAsyncThunk<TableData, TableData>(
       }
     } catch (error: AxiosError) {
       if (error) {
+        console.log(error)
+
         handleServerNetworkError(error, dispatch)
         return rejectWithValue(null)
       }
