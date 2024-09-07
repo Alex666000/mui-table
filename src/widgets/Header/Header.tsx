@@ -11,6 +11,7 @@ import { logout } from '@/features/auth/model/slice/authSlice'
 import { useCallback } from 'react'
 import { Container, Typography } from '@mui/material'
 import StyleIcon from '@mui/icons-material/Style'
+import LogoutIcon from '@mui/icons-material/Logout'
 
 export const Header = () => {
   const status = useAppSelector(selectAppStatus)
@@ -45,7 +46,28 @@ export const Header = () => {
             </Typography>
           </Box>
           {isLoggedIn && (
-            <Button onClick={handleLogout} variant="contained" color="primary">
+            <Button
+              onClick={handleLogout}
+              size={'medium'}
+              sx={{
+                backgroundColor: '#FFF',
+                boxShadow:
+                  '0px 4px 18px rgb(0 0 0 / 35%), inset 0px 1px 0px rgb(255 255 255 / 30%)',
+                color: '#000',
+                columnGap: 2,
+                transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
+                '&:hover': {
+                  backgroundColor: '#f3f3f3',
+                  boxShadow:
+                    '0px 6px 20px rgb(0 0 0 / 40%), inset 0px 1px 0px rgb(255 255 255 / 35%)',
+                },
+                '& svg': {
+                  color: '#000',
+                  fontSize: '1.2rem',
+                },
+              }}
+              variant={'radius' as any}>
+              <LogoutIcon />
               Log out
             </Button>
           )}

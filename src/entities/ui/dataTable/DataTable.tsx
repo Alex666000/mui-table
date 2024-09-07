@@ -4,10 +4,6 @@ import { selectDataTable } from '../../model/selectors'
 import { selectIsLoggedIn } from '@/features/auth/model/selectors/auth.selectors'
 import TableRow from '@mui/material/TableRow'
 import TableCell from '@mui/material/TableCell'
-import IconButton from '@mui/material/IconButton'
-import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined'
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
-import Button from '@mui/material/Button'
 import { selectAppStatus } from '@/app/model/appSelectors'
 import { EnhancedTableContent } from './EnhancedTableContent'
 import { RequestStatus } from '@/app/model/appReducer'
@@ -21,6 +17,7 @@ import { useRecordManagement } from '@/entities/model/hooks'
 import { tablesThunks } from '../../model/slice'
 import { headCells } from '../../model/const'
 import { ReturnComponent } from '@/shared/types'
+import { TableActions } from '@/entities/ui/dataTable/TableActions'
 
 export const DataTable = (): ReturnComponent => {
   const dispatch = useDispatch()
@@ -60,12 +57,12 @@ export const DataTable = (): ReturnComponent => {
       <TableCell align={'left'}>{formatDateISO(row.employeeSigDate)}</TableCell>
       <TableCell align={'left'}>{row.employeeSignatureName}</TableCell>
       <TableCell align={'left'}>
-        <IconButton onClick={() => handleEdit(row)} sx={{ padding: '6px' }}>
-          <BorderColorOutlinedIcon />
-        </IconButton>
-        <IconButton onClick={() => handleDelete(row.id)} sx={{ padding: '6px' }}>
-          <DeleteOutlinedIcon />
-        </IconButton>
+        <TableActions
+          row={row}
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
+          handleAdd={handleAdd}
+        />
       </TableCell>
     </TableRow>
   ))
@@ -75,14 +72,11 @@ export const DataTable = (): ReturnComponent => {
       <EnhancedTableContent headCells={headCells} pageCount={20} status={status as RequestStatus}>
         {tableItems}
       </EnhancedTableContent>
+
       {!(tableData as TableData[]).length && (
         <NotFindAnything status={status as RequestStatus} value="Данные" />
       )}
-      <Button variant="contained" color="primary" onClick={handleAdd}>
-        Добавить запись
-      </Button>
       {status === 'failed' && <EmptyIcon />}
-
       <AddRecordModal
         open={isAddModalOpen}
         onClose={handleModalClose}

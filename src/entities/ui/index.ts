@@ -1,1 +1,1 @@
-export * from './dataTable.tsx/DataTable'
+export * from '@/entities/ui/dataTable/DataTable'
