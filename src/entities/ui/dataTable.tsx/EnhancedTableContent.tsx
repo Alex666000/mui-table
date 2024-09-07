@@ -17,7 +17,7 @@ type TableContentPropsType = {
 export const EnhancedTableContent = ({
   children,
   headCells,
-  pageCount,
+  pageCount = 7,
   status,
 }: TableContentPropsType): ReturnComponent => {
   return (

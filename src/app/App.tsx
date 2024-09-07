@@ -1,12 +1,12 @@
 import { AppSnackbar } from '@/shared/ui/AppSnackbar'
-import { Header } from '@/widgets/Header/Header'
 import { AllRoutes } from './providers/routrer'
-import { useAppDispatch, useAppSelector } from '@/app/providers/store/store'
-import { selectIsInitialized } from '@/app/model/appSelectors'
-import { GlobalAppLoader } from '@/shared/ui/GlobalAppLoader/GlobalAppLoader'
+import { useAppDispatch, useAppSelector } from './providers/store/store'
+import { selectIsInitialized } from './model/appSelectors'
 import { useEffect } from 'react'
 import { setAppInitialized } from './model'
+import { GlobalAppLoader } from '@/shared/ui/GlobalAppLoader'
 import s from './App.module.scss'
+import { Header } from '@/widgets/Header'
 
 function App() {
   const isInitialized = useAppSelector(selectIsInitialized)

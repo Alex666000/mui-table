@@ -1,17 +1,13 @@
 import { ElementType, FC, FormEvent, memo, PropsWithChildren } from 'react'
 import { Link } from 'react-router-dom'
-
-import Button from '@mui/material/Button'
 import FormControl from '@mui/material/FormControl'
 import FormGroup from '@mui/material/FormGroup'
 import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
-import { LinkWrapper } from '@/shared/ui/LinkWrapper/LinkWrapper'
+import { LinkWrapper } from '../LinkWrapper'
 import Grid from '@mui/material/Grid2'
 
 type FormType = {
-  // Тип элемента, который будет использоваться для формы (например, 'form', 'div',
-  // Если не указан, по умолчанию используется 'form'.
   as?: ElementType
   description?: string //  Описание формы (description), если оно задано
   link?: {
@@ -19,7 +15,7 @@ type FormType = {
     title: string // Заголовок формы
     to: string
   }
-  onClick?: () => void // Обработчик события клика на кнопку формы.
+  onClick?: () => void
   onSubmit?: (event: FormEvent<HTMLFormElement>) => void // Обработчик события отправки формы.
   title?: string // Заголовок формы если он задан
   buttonText?: string // Текст на кнопке формы
@@ -28,8 +24,6 @@ type FormType = {
  - LinkWrapper (обёртка для ссылки router-dom_a), обеспечивает определенные стили для ссылки.
  - FormGroup: обеспечивает компактное расположение строк "детей" формы.
  */
-
-// Кастомная форма - обертка над FormControl
 export const FormWrapper: FC<FormType & PropsWithChildren> = memo((props) => {
   const { as, children, description, link, onClick, onSubmit, title, buttonText } = props
 
