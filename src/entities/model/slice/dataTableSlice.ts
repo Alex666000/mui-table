@@ -61,12 +61,10 @@ const fetchTableData = createAppAsyncThunk<{ tableData: TableData[] }, void>(
         }
       }
     } catch (error: AxiosError) {
-      if (error) {
-        dispatch(setAppStatus({ status: 'failed' }))
-        if (state?.tableData?.isDataLoaded) {
-          handleServerNetworkError(error, dispatch)
-          return rejectWithValue(null)
-        }
+      dispatch(setAppStatus({ status: 'failed' }))
+      if (state?.tableData?.isDataLoaded) {
+        handleServerNetworkError(error, dispatch)
+        return rejectWithValue(null)
       }
     }
   }
@@ -88,12 +86,10 @@ const createRecord = createAppAsyncThunk<TableData, TableData>(
         }
       }
     } catch (error: AxiosError) {
-      if (error) {
-        console.log(error)
+      console.log(error)
 
-        handleServerNetworkError(error, dispatch)
-        return rejectWithValue(null)
-      }
+      handleServerNetworkError(error, dispatch)
+      return rejectWithValue(null)
     }
   }
 )
@@ -114,10 +110,8 @@ const updateRecord = createAppAsyncThunk<TableData, { id: string; data: TableDat
         }
       }
     } catch (error: AxiosError) {
-      if (error) {
-        handleServerNetworkError(error, dispatch)
-        return rejectWithValue(null)
-      }
+      handleServerNetworkError(error, dispatch)
+      return rejectWithValue(null)
     }
   }
 )
@@ -138,10 +132,8 @@ const deleteRecord = createAppAsyncThunk<TableData, string>(
         }
       }
     } catch (error: AxiosError) {
-      if (error) {
-        handleServerNetworkError(error, dispatch)
-        return rejectWithValue(null)
-      }
+      handleServerNetworkError(error, dispatch)
+      return rejectWithValue(null)
     }
   }
 )
