@@ -42,7 +42,7 @@ export const handleServerNetworkError = (
 
   if (axios.isAxiosError(error)) {
     debugger
-    errorMessage = error.response?.data?.errors.documentName[0]
+    errorMessage = `${error.response?.data?.errors.documentName[0]} And ${error.response?.data?.errors.documentStatus[0]}`
     // ❗ Проверка на наличие нативной ошибки - например "мапимся" по массиву "undefined"
   } else if (error instanceof Error) {
     errorMessage = `Native error: ${error.message}`
