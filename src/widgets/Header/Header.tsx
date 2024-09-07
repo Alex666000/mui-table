@@ -48,12 +48,11 @@ export const Header = () => {
           {isLoggedIn && (
             <Button
               onClick={handleLogout}
-              size={'medium'}
               sx={{
                 backgroundColor: '#FFF',
                 boxShadow:
                   '0px 4px 18px rgb(0 0 0 / 35%), inset 0px 1px 0px rgb(255 255 255 / 30%)',
-                color: '#000',
+                color: '#312d2d',
                 columnGap: 2,
                 transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
                 '&:hover': {
@@ -62,7 +61,7 @@ export const Header = () => {
                     '0px 6px 20px rgb(0 0 0 / 40%), inset 0px 1px 0px rgb(255 255 255 / 35%)',
                 },
                 '& svg': {
-                  color: '#000',
+                  color: '#312d2d',
                   fontSize: '1.2rem',
                 },
               }}
