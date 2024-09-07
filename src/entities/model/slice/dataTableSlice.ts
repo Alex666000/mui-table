@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError } from '@/shared/utils'
-import { setAppStatus } from '@/app/model/appReducer'
-import { dataTableAPI } from '../../api'
-import { AxiosError } from 'axios'
+import { setAppError, setAppStatus } from '@/app/model/appReducer'
+import { CreateRecordResError, CreateRecordResErrors, dataTableAPI } from '../../api'
+import axios, { AxiosError } from 'axios'
 import { AppRootState } from '@/app/providers/store/store'
 import { ResultCode } from '@/shared/constants'
 import { TableData, TableState } from '../types'
@@ -86,9 +86,42 @@ const createRecord = createAppAsyncThunk<TableData, TableData>(
         }
       }
     } catch (error: AxiosError) {
-      console.log(error)
+      let errorMessage
 
-      handleServerNetworkError(error, dispatch)
+      if (axios.isAxiosError(error)) {
+        const axiosError = error
+
+        // Проверка наличия ошибок в ответе сервера
+        if (axiosError.response?.data) {
+          const responseData = axiosError.response.data as
+            | CreateRecordResErrors<CreateRecordResError>
+            | unknown
+          if (responseData.errors) {
+            const documentNameError = responseData.errors.documentName?.[0]
+            const documentStatusError = responseData.errors.documentStatus?.[0]
+
+            // Формируем сообщение об ошибке
+            if (documentNameError && documentStatusError) {
+              errorMessage = `${documentNameError} And ${documentStatusError}`
+            } else if (documentNameError) {
+              errorMessage = documentNameError
+            } else if (documentStatusError) {
+              errorMessage = documentStatusError
+            }
+          } else {
+            errorMessage = responseData.error_text || 'Server error'
+          }
+        } else {
+          errorMessage = 'Server error'
+        }
+      } else if (error instanceof Error) {
+        errorMessage = `Native error: ${error.message}`
+      } else {
+        errorMessage = `Unknown error: ${JSON.stringify(error)}`
+      }
+
+      dispatch(setAppError({ error: errorMessage }))
+      dispatch(setAppStatus({ status: 'failed' }))
       return rejectWithValue(null)
     }
   }

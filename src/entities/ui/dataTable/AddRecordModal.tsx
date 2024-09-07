@@ -40,13 +40,6 @@ export const AddRecordModal = ({
           margin="normal"
         />
         <TextField
-          label="Номер сотрудника"
-          value={newRecord.employeeNumber}
-          onChange={(e) => setNewRecord({ ...newRecord, employeeNumber: e.target.value })}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
           label="Тип документа"
           value={newRecord.documentType}
           onChange={(e) => setNewRecord({ ...newRecord, documentType: e.target.value })}
@@ -61,20 +54,6 @@ export const AddRecordModal = ({
           margin="normal"
         />
         <TextField
-          label="Подпись компании"
-          value={newRecord.companySignatureName}
-          onChange={(e) => setNewRecord({ ...newRecord, companySignatureName: e.target.value })}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Подпись сотрудника"
-          value={newRecord.employeeSignatureName}
-          onChange={(e) => setNewRecord({ ...newRecord, employeeSignatureName: e.target.value })}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
           label="Дата подписи компании"
           type="datetime-local"
           value={formatDateISO(newRecord.companySigDate, true)}
@@ -83,10 +62,31 @@ export const AddRecordModal = ({
           margin="normal"
         />
         <TextField
+          label="Подпись компании"
+          value={newRecord.companySignatureName}
+          onChange={(e) => setNewRecord({ ...newRecord, companySignatureName: e.target.value })}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Номер сотрудника"
+          value={newRecord.employeeNumber}
+          onChange={(e) => setNewRecord({ ...newRecord, employeeNumber: e.target.value })}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
           label="Дата подписи сотрудника"
           type="datetime-local"
           value={formatDateISO(newRecord.employeeSigDate, true)}
           onChange={(e) => setNewRecord({ ...newRecord, employeeSigDate: e.target.value })}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Подпись сотрудника"
+          value={newRecord.employeeSignatureName}
+          onChange={(e) => setNewRecord({ ...newRecord, employeeSignatureName: e.target.value })}
           fullWidth
           margin="normal"
         />

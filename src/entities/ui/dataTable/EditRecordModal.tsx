@@ -40,13 +40,6 @@ export const EditRecordModal = ({
           margin="normal"
         />
         <TextField
-          label="Номер сотрудника"
-          value={record.employeeNumber}
-          onChange={(e) => setRecord({ ...record, employeeNumber: e.target.value })}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
           label="Тип документа"
           value={record.documentType}
           onChange={(e) => setRecord({ ...record, documentType: e.target.value })}
@@ -61,16 +54,24 @@ export const EditRecordModal = ({
           margin="normal"
         />
         <TextField
-          label="Имя подписи сотрудника"
-          value={record.employeeSignatureName}
-          onChange={(e) => setRecord({ ...record, employeeSignatureName: e.target.value })}
+          label="Дата подписи компании"
+          type="datetime-local"
+          value={formatDateISO(record.companySigDate)}
+          onChange={(e) => setRecord({ ...record, companySigDate: e.target.value })}
           fullWidth
           margin="normal"
         />
         <TextField
-          label="Имя подписи компании"
+          label="Подпись компании"
           value={record.companySignatureName}
           onChange={(e) => setRecord({ ...record, companySignatureName: e.target.value })}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Номер сотрудника"
+          value={record.employeeNumber}
+          onChange={(e) => setRecord({ ...record, employeeNumber: e.target.value })}
           fullWidth
           margin="normal"
         />
@@ -83,10 +84,9 @@ export const EditRecordModal = ({
           margin="normal"
         />
         <TextField
-          label="Дата подписи компании"
-          type="datetime-local"
-          value={formatDateISO(record.companySigDate)}
-          onChange={(e) => setRecord({ ...record, companySigDate: e.target.value })}
+          label="Подпись сотрудника"
+          value={record.employeeSignatureName}
+          onChange={(e) => setRecord({ ...record, employeeSignatureName: e.target.value })}
           fullWidth
           margin="normal"
         />

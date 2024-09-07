@@ -41,14 +41,14 @@ export const dataTableAPI = {
 }
 
 // types
-export type CreateRecordResError<D> = {
+export type CreateRecordResErrors<D> = {
   errors: D
   type: string
   title: string
   status: number
   traceId: string
 }
-export type CreateError = {
+export type CreateRecordResError = {
   documentName: string[]
   documentStatus: string[]
 }

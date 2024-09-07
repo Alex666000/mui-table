@@ -4,7 +4,6 @@ import { ThunkDispatch, UnknownAction } from '@reduxjs/toolkit'
 import { BadRequest } from '@/features/auth/model/type'
 import { ResultCode } from '../constants'
 import axios from 'axios'
-import { CreateRecordResError, CreateError } from '@/entities/api'
 
 /**
  * Обрабатывает ошибки, полученные от сервера, и обновляет статус приложения.
@@ -18,14 +17,13 @@ export const handleServerAppError = (
   isShowGlobalError: boolean = true
 ) => {
   if (isShowGlobalError) {
-    debugger
     dispatch(
       setAppError({
         error: data.error_code !== ResultCode.Success ? data.error_text : 'Some error occurred',
       })
     )
   }
-  debugger
+
   dispatch(setAppStatus({ status: 'failed' }))
 }
 
@@ -34,39 +32,27 @@ export const handleServerAppError = (
  * @param {object} error - Объект ошибки, содержащий сообщение об ошибке.
  * @param {ThunkDispatch<AppRootState, unknown, UnknownAction>} dispatch - Диспетчер Redux для изменения состояния приложения.
  */
-export const handleServerNetworkError = (error: unknown, dispatch: AppDispatch) => {
-  let errorMessage
+export const handleServerNetworkError = (
+  error: { message: string },
+  dispatch: ThunkDispatch<AppRootState, unknown, UnknownAction>
+) => {
+  let errorMessage = 'Connection error'
 
   if (axios.isAxiosError(error)) {
-    const axiosError = error as axios.AxiosError
-
-    // Проверка наличия ошибок в ответе сервера
-    if (axiosError.response?.data) {
-      const responseData = axiosError.response.data as CreateRecordResError<CreateError> | unknown
-      if (responseData.errors) {
-        const documentNameError = responseData.errors.documentName?.[0]
-        const documentStatusError = responseData.errors.documentStatus?.[0]
-
-        // Формируем сообщение об ошибке
-        if (documentNameError && documentStatusError) {
-          errorMessage = `${documentNameError} And ${documentStatusError}`
-        } else if (documentNameError) {
-          errorMessage = documentNameError
-        } else if (documentStatusError) {
-          errorMessage = documentStatusError
-        }
-      } else {
-        errorMessage = responseData.error_text || 'Server error'
-      }
-    } else {
-      errorMessage = 'Server error'
-    }
+    debugger
+    // ⏺️ err?.message - например при логинизации в "offline" режиме
+    errorMessage = error.response?.data?.message || error?.message || errorMessage
+    // ❗ Проверка на наличие нативной ошибки - например "мапимся" по массиву "undefined"
   } else if (error instanceof Error) {
+    debugger
     errorMessage = `Native error: ${error.message}`
+    // ❗ Какой-то другой непонятный кейс
   } else {
-    errorMessage = `Unknown error: ${JSON.stringify(error)}`
+    debugger
+    // переводим объект в строку
+    errorMessage = JSON.stringify(error)
   }
 
-  dispatch(setAppError({ error: errorMessage }))
+  dispatch(setAppError({ error: error.message ? error.message : errorMessage }))
   dispatch(setAppStatus({ status: 'failed' }))
 }
