@@ -1,5 +1,5 @@
-import { setAppInitialized, setAppStatus } from '@/app/model'
-import { handleServerNetworkError, ReduxDispatch } from '@/shared/utils/error-utils'
+import { setAppStatus } from '@/app/model'
+import { CatchError, handleServerNetworkError, ReduxDispatch } from '@/shared/utils/error-utils'
 import { AxiosError } from 'axios'
 import { createAppAsyncThunk } from '@/shared/utils/createAppAsyncThunk'
 
@@ -8,19 +8,18 @@ type ThunkAPI = {
   rejectWithValue: createAppAsyncThunk['rejectValue']
 }
 
-export const thunkTryCatch = async (
+export const thunkTryCatch = async <T>(
   { dispatch, rejectWithValue }: ThunkAPI,
-  logic: () => Promise<any>
-) => {
+  logic: () => Promise<T>
+): Promise<T | ReturnType<typeof rejectWithValue>> => {
   try {
     dispatch(setAppStatus({ status: 'loading' }))
-    // logic
+    // logic:
     return await logic()
-  } catch (error: AxiosError | Error) {
+  } catch (error: AxiosError | Error | CatchError) {
     handleServerNetworkError(error, dispatch)
     return rejectWithValue(null)
   } finally {
     dispatch(setAppStatus({ status: 'idle' }))
-    dispatch(setAppInitialized({ isInitialized: true }))
   }
 }

@@ -1,4 +1,4 @@
-import { ResultCode } from '@/shared/constants'
+import { ResultCode } from '../constants'
 import { setAppError, setAppStatus } from '@/app/model'
 import axios from 'axios'
 import { CreateRecordResError, CreateRecordResErrors } from '@/entities/api'
@@ -69,5 +69,5 @@ export const handleServerNetworkError = (
 }
 
 // type
-type CatchError = AxiosError | Error
+export type CatchError = AxiosError | Error
 export type ReduxDispatch = ThunkDispatch<AppRootState, unknown, UnknownAction>
