@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { tablesThunks } from '../../model/slice'
-import { TableData } from '../../model/types'
+import { Table } from '../../model/types'
 import { Nullable } from '@/shared/types/nullable'
 
 export const useRecordManagement = () => {
   const dispatch = useDispatch()
   const [isAddModalOpen, setAddModalOpen] = useState(false)
   const [isEditModalOpen, setEditModalOpen] = useState(false)
-  const [newRecord, setNewRecord] = useState<TableData>({
+  const [newRecord, setNewRecord] = useState<Table>({
     id: `${Math.random()}`,
     documentStatus: '',
     employeeNumber: '',
@@ -19,11 +19,11 @@ export const useRecordManagement = () => {
     employeeSigDate: new Date().toISOString().slice(0, 16),
     companySigDate: new Date().toISOString().slice(0, 16),
   })
-  const [editRecord, setEditRecord] = useState<Nullable<TableData>>(null)
+  const [editRecord, setEditRecord] = useState<Nullable<Table>>(null)
 
   const handleAdd = () => setAddModalOpen(true)
 
-  const handleEdit = (record: TableData) => {
+  const handleEdit = (record: Table) => {
     setEditRecord(record)
     setEditModalOpen(true)
   }
@@ -33,7 +33,7 @@ export const useRecordManagement = () => {
     setEditModalOpen(false)
   }
 
-  const handleSaveRecord = async (record: TableData) => {
+  const handleSaveRecord = async (record: Table) => {
     try {
       await dispatch(tablesThunks.createRecord(record))
       await dispatch(tablesThunks.fetchTableData())
@@ -55,7 +55,7 @@ export const useRecordManagement = () => {
     }
   }
 
-  const handleUpdateRecord = async (record: TableData) => {
+  const handleUpdateRecord = async (record: Table) => {
     try {
       if (editRecord?.id) {
         await dispatch(tablesThunks.updateRecord({ id: editRecord.id, data: record }))

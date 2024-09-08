@@ -12,7 +12,7 @@ import { EmptyIcon } from '@/shared/assets/icons/EmptyIcon'
 import { formatDateISO } from '../../model/utils'
 import { AddRecordModal } from './AddRecordModal'
 import { EditRecordModal } from './EditRecordModal'
-import { TableData } from '../../model/types'
+import { Table } from '../../model/types'
 import { useRecordManagement } from '@/entities/model/hooks'
 import { tablesThunks } from '../../model/slice'
 import { headCells } from '../../model/const'
@@ -46,7 +46,7 @@ export const DataTable = (): ReturnComponent => {
     }
   }, [isLoggedIn, status, dispatch])
 
-  const tableItems = (tableData as TableData[]).map((row, index) => (
+  const tableItems = (tableData as Table[]).map((row, index) => (
     <TableRow hover key={index}>
       <TableCell align={'left'}>{formatDateISO(row.companySigDate)}</TableCell>
       <TableCell align={'left'}>{row.companySignatureName}</TableCell>
@@ -73,7 +73,7 @@ export const DataTable = (): ReturnComponent => {
         {tableItems}
       </EnhancedTableContent>
 
-      {!(tableData as TableData[]).length && (
+      {!(tableData as Table[]).length && (
         <NotFindAnything status={status as RequestStatus} value="Данные" />
       )}
       {status === 'failed' && <EmptyIcon />}

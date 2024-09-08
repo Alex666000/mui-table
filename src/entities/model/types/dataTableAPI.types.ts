@@ -1,13 +1,22 @@
 import { instance } from '@/shared/api'
 
-export type FetchTableResponse<D = {}> = {
+export type ResponseData<D = {}> = {
   error_code: number
   error_message: string
-  data: D[]
+  data?: D
   profiling: string
   timings?: null
 }
-export type TableData = {
+
+export type BadRequestResData = {
+  error_code: number
+  error_text: string
+  data?: null
+  profiling: string
+  timings?: null
+}
+
+export type Table = {
   id: string
   documentStatus: string
   employeeNumber: string
@@ -19,13 +28,6 @@ export type TableData = {
   companySigDate: string
 }
 
-export type CreateResponseRecord<D = {}> = {
-  error_code: number
-  error_message: string
-  data: D
-  profiling: string
-  timings?: null
-}
 export type Record = {
   id: string
   documentStatus: string
@@ -42,6 +44,6 @@ export type PostRequestMethod = ReturnType<typeof instance.post>
 export type GetRequestMethod = ReturnType<typeof instance.get>
 
 export type TableState = {
-  data: TableData[]
+  data: Table[]
   isDataLoaded: boolean
 }

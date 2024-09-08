@@ -1,26 +1,16 @@
 import { instance } from '@/shared/api'
-import {
-  CreateResponseRecord,
-  FetchTableResponse,
-  GetRequestMethod,
-  PostRequestMethod,
-  Record,
-  TableData,
-} from '../model/types'
+import { ResponseData, GetRequestMethod, PostRequestMethod, Record, Table } from '../model/types'
 
 const token = localStorage.getItem('authToken')
 
 export const dataTableAPI = {
   fetchTableData() {
-    return instance.get<FetchTableResponse<TableData>>(
-      '/ru/data/v3/testmethods/docs/userdocs/get',
-      {
-        headers: { 'x-auth': token },
-      } as GetRequestMethod
-    )
+    return instance.get<ResponseData<Table[]>>('/ru/data/v3/testmethods/docs/userdocs/get', {
+      headers: { 'x-auth': token },
+    } as GetRequestMethod)
   },
   createRecord(data: Record) {
-    return instance.post<CreateResponseRecord<Record>>(
+    return instance.post<ResponseData<Record>>(
       '/ru/data/v3/testmethods/docs/userdocs/create',
       data,
       {

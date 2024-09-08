@@ -2,12 +2,12 @@ import IconButton from '@mui/material/IconButton'
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import AddToPhotosIcon from '@mui/icons-material/AddToPhotos'
-import { TableData } from '../../model/types'
+import { Table } from '../../model/types'
 import { ReturnComponent } from '@/shared/types'
 
 interface TableActionsProps {
-  row: TableData
-  handleEdit: (row: TableData) => void
+  row: Table
+  handleEdit: (row: Table) => void
   handleDelete: (id: string) => void
   handleAdd: () => void
 }
