@@ -64,20 +64,16 @@ const createRecord = createAppAsyncThunk<Table, Table>(
   `${slice.name}/createRecord`,
   async (newRecord, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI
-    try {
-      dispatch(setAppStatus({ status: 'loading' }))
+
+    return thunkTryCatch(thunkAPI, async () => {
       const res = await dataTableAPI.createRecord(newRecord)
       if (res.data.error_code === ResultCode.Success) {
-        dispatch(setAppStatus({ status: 'succeeded' }))
         return res.data.data
       } else {
         handleServerAppError(res.data, dispatch)
         return rejectWithValue(null)
       }
-    } catch (error: AxiosError | Error) {
-      handleServerNetworkError(error, dispatch)
-      return rejectWithValue(null)
-    }
+    })
   }
 )
 
@@ -85,20 +81,16 @@ const updateRecord = createAppAsyncThunk<Table, { id: string; data: Table }>(
   `${slice.name}/updateRecord`,
   async ({ id, data }, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI
-    try {
-      dispatch(setAppStatus({ status: 'loading' }))
+
+    return thunkTryCatch(thunkAPI, async () => {
       const res = await dataTableAPI.updateRecord(id, data)
       if (res.data.error_code === ResultCode.Success) {
-        dispatch(setAppStatus({ status: 'succeeded' }))
         return res.data.data
       } else {
         handleServerAppError(res.data, dispatch)
         return rejectWithValue(null)
       }
-    } catch (error: AxiosError | Error) {
-      handleServerNetworkError(error, dispatch)
-      return rejectWithValue(null)
-    }
+    })
   }
 )
 
@@ -106,7 +98,8 @@ const deleteRecord = createAppAsyncThunk<Table, string>(
   `${slice.name}/deleteRecord`,
   async (id, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI
-    try {
+
+    return thunkTryCatch(thunkAPI, async () => {
       dispatch(setAppStatus({ status: 'loading' }))
       const res = await dataTableAPI.deleteRecord(id)
       if (res.data.error_code === ResultCode.Success) {
@@ -116,10 +109,7 @@ const deleteRecord = createAppAsyncThunk<Table, string>(
         handleServerAppError(res.data, dispatch)
         return rejectWithValue(null)
       }
-    } catch (error: AxiosError | Error) {
-      handleServerNetworkError(error, dispatch)
-      return rejectWithValue(null)
-    }
+    })
   }
 )
 
