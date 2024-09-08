@@ -1,8 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { authAPI, LoginParams } from '../../api'
-import { createAppAsyncThunk, handleServerAppError } from '@/shared/utils'
+import { createAppAsyncThunk, handleServerAppError, thunkTryCatch } from '@/shared/utils'
 import { ResultCode } from '@/shared/constants'
-import { thunkTryCatch } from '@/shared/utils/thunkTryCatch'
 import { setAppInitialized } from '@/app/model'
 
 // slice:

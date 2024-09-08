@@ -17,10 +17,11 @@ import { useRecordManagement } from '@/entities/model/hooks'
 import { tablesThunks } from '../../model/slice'
 import { headCells } from '../../model/const'
 import { ReturnComponent } from '@/shared/types'
-import { TableActions } from '@/entities/ui/dataTable/TableActions'
+import { TableActions } from './TableActions'
 
 export const DataTable = (): ReturnComponent => {
   const dispatch = useDispatch()
+
   const isLoggedIn = useSelector(selectIsLoggedIn)
   const tableData = useSelector(selectDataTable)
   const status = useSelector(selectAppStatus)

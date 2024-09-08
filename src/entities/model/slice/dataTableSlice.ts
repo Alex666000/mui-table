@@ -1,11 +1,10 @@
 import { createSlice, ValidateSliceCaseReducers } from '@reduxjs/toolkit'
-import { createAppAsyncThunk, handleServerAppError } from '@/shared/utils'
+import { createAppAsyncThunk, handleServerAppError, thunkTryCatch } from '@/shared/utils'
 import { setAppStatus } from '@/app/model/appSlice'
 import { dataTableAPI } from '../../api'
 import { AppRootState } from '@/app/providers/store/store'
 import { ResultCode } from '@/shared/constants'
 import { Table, TableState } from '../types'
-import { thunkTryCatch } from '@/shared/utils/thunkTryCatch'
 
 // slice
 const slice = createSlice({
