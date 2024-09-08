@@ -1,12 +1,11 @@
 import { createSlice, ValidateSliceCaseReducers } from '@reduxjs/toolkit'
-import { createAppAsyncThunk } from '@/shared/utils'
-import { setAppError, setAppStatus } from '@/app/model/appSlice'
-import { CreateRecordResError, CreateRecordResErrors, dataTableAPI } from '../../api'
-import axios, { AxiosError } from 'axios'
+import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError } from '@/shared/utils'
+import { setAppStatus } from '@/app/model/appSlice'
+import { dataTableAPI } from '../../api'
+import { AxiosError } from 'axios'
 import { AppRootState } from '@/app/providers/store/store'
 import { ResultCode } from '@/shared/constants'
 import { Table, TableState } from '../types'
-import { handleServerAppError, handleServerNetworkError } from '@/shared/utils/error-utils'
 
 // slice
 const slice = createSlice({
