@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { authThunks } from '@/features/auth/model/slice/authSlice'
 import { useFormik } from 'formik'
 import { Navigate } from 'react-router-dom'
@@ -15,7 +15,7 @@ import { selectIsLoggedIn, selectNeedsReload } from '@/features/auth/model/selec
 import { useAppDispatch } from '@/app/providers/store/store'
 import { UnknownAction } from '@reduxjs/toolkit'
 
-export const LoginPage = () => {
+const LoginPage = () => {
   const dispatch = useAppDispatch()
   const isLoggedIn = useSelector(selectIsLoggedIn)
   const needsReload = useSelector(selectNeedsReload)
@@ -124,3 +124,4 @@ export const LoginPage = () => {
     </FormWrapper>
   )
 }
+export default LoginPage

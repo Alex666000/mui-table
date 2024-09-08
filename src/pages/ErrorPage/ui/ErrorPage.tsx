@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography'
 import { ErrorImage } from '@/shared/assets/images/ErrorImage/ErrorImage'
 import { ROUTES } from '@/shared/constants/paths'
 
-export const ErrorPage = () => {
+const ErrorPage = () => {
   const navigate = useNavigate()
 
   return (
@@ -30,3 +30,5 @@ export const ErrorPage = () => {
     </Grid>
   )
 }
+
+export default ErrorPage

@@ -6,8 +6,9 @@ import { selectAppStatus } from '@/app/model/appSelectors'
 import LinearProgress from '@mui/material/LinearProgress'
 import { DataTable } from '@/entities/ui'
 import { ReturnComponent } from '@/shared/types'
+import { Fragment } from 'react'
 
-export const MainPage = (): ReturnComponent => {
+const MainPage = (): ReturnComponent => {
   const isLoggedIn = useSelector(selectIsLoggedIn)
   const status = useSelector(selectAppStatus)
 
@@ -16,9 +17,6 @@ export const MainPage = (): ReturnComponent => {
   }
   console.log('render MainPage')
 
-  return (
-    <div style={{ marginTop: '40px' }}>
-      {status === 'loading' ? <LinearProgress /> : <DataTable />}
-    </div>
-  )
+  return <Fragment>{status === 'loading' ? <LinearProgress /> : <DataTable />}</Fragment>
 }
+export default MainPage
