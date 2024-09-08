@@ -4,7 +4,7 @@ import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableContainer from '@mui/material/TableContainer'
 import { TableSkeleton } from '@/shared/ui/TableSkeleton/TableSkeleton'
-import { RequestStatus } from '@/app/model/appReducer'
+import { RequestStatus } from '@/app/model/appSlice'
 import { ReturnComponent } from '@/shared/types'
 import { EnhancedTableHead, HeadCellType } from './EnhancedTableHead'
 

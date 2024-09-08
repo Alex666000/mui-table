@@ -1,4 +1,4 @@
-import { setAppError, setAppStatus } from '@/app/model/appReducer'
+import { setAppError, setAppStatus } from '@/app/model/appSlice'
 import { AppDispatch, AppRootState } from '@/app/providers/store/store'
 import { ThunkDispatch, UnknownAction } from '@reduxjs/toolkit'
 import { BadRequest } from '@/features/auth/model/type'
@@ -39,12 +39,10 @@ export const handleServerNetworkError = (
   let errorMessage = 'Connection error'
 
   if (axios.isAxiosError(error)) {
-    debugger
     // ⏺️ err?.message - например при логинизации в "offline" режиме
     errorMessage = error.response?.data?.message || error?.message || errorMessage
     // ❗ Проверка на наличие нативной ошибки - например "мапимся" по массиву "undefined"
   } else if (error instanceof Error) {
-    debugger
     errorMessage = `Native error: ${error.message}`
     // ❗ Какой-то другой непонятный кейс
   } else {

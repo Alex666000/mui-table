@@ -14,6 +14,8 @@ export const MainPage = (): ReturnComponent => {
   if (!isLoggedIn) {
     return <Navigate to={ROUTES.login} />
   }
+  console.log('render MainPage')
+
   return (
     <div style={{ marginTop: '40px' }}>
       {status === 'loading' ? <LinearProgress /> : <DataTable />}

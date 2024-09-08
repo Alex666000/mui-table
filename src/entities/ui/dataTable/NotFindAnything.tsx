@@ -1,4 +1,4 @@
-import { RequestStatus } from '@/app/model/appReducer'
+import { RequestStatus } from '@/app/model/appSlice'
 import { ReturnComponent } from '@/shared/types'
 
 type Props = {

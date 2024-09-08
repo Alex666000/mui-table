@@ -1,17 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { setAppError, setAppInitialized, setAppStatus } from '@/app/model/appReducer'
 import { authAPI } from '../../api'
 import { createAppAsyncThunk } from '@/shared/utils'
 import { handleServerAppError, handleServerNetworkError } from '@/shared/utils/error-utils'
 import { LoginParams } from '../type'
 import { ResultCode } from '@/shared/constants'
 import { AxiosError } from 'axios/index'
-import axios from 'axios'
+import { setAppInitialized, setAppStatus } from '@/app/model'
 
 const slice = createSlice({
   name: 'auth',
   initialState: {
     isLoggedIn: !!localStorage.getItem('authToken'), // Инициализация состояния на основе наличия токена
+    needsReload: false, // флаг для принудительной перезагрузки страницы
   },
   reducers: {
     logout: (state) => {
@@ -23,6 +23,9 @@ const slice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(login.fulfilled, (state, action) => {
       state.isLoggedIn = action?.payload?.isLoggedIn
+      state.token = action?.payload?.token
+      localStorage.setItem('authToken', action?.payload?.token)
+      state.needsReload = true // Устанавливаем флаг
     })
   },
 } as ReturnType<typeof slice>)
@@ -42,7 +45,6 @@ const login = createAppAsyncThunk<{ isLoggedIn: boolean; token: string }, LoginP
 
         // Сохраняем токен в localStorage
         if (token) {
-          localStorage.setItem('authToken', token)
           dispatch(setAppStatus({ status: 'succeeded' }))
           return { isLoggedIn: true, token }
         }
@@ -54,24 +56,7 @@ const login = createAppAsyncThunk<{ isLoggedIn: boolean; token: string }, LoginP
       }
     } catch (error: AxiosError) {
       if (error) {
-        let errorMessage = 'Connection error'
-
-        if (axios.isAxiosError(error)) {
-          debugger
-          // ⏺️ err?.message - например при логинизации в "offline" режиме
-          errorMessage = error.response?.data?.message || error?.message || errorMessage
-          // ❗ Проверка на наличие нативной ошибки - например "мапимся" по массиву "undefined"
-        } else if (error instanceof Error) {
-          errorMessage = `Native error: ${error.message}`
-          // ❗ Какой-то другой непонятный кейс
-        } else {
-          debugger
-          // переводим объект в строку
-          errorMessage = JSON.stringify(error)
-        }
-
-        dispatch(setAppError({ error: error.message ? error.message : errorMessage }))
-        dispatch(setAppStatus({ status: 'failed' }))
+        handleServerNetworkError(error, dispatch)
         return rejectWithValue(null)
       }
     } finally {

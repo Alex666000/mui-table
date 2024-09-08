@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError } from '@/shared/utils'
-import { setAppError, setAppStatus } from '@/app/model/appReducer'
+import { setAppError, setAppStatus } from '@/app/model/appSlice'
 import { CreateRecordResError, CreateRecordResErrors, dataTableAPI } from '../../api'
 import axios, { AxiosError } from 'axios'
 import { AppRootState } from '@/app/providers/store/store'

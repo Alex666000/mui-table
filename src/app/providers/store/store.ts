@@ -1,11 +1,11 @@
 import { combineReducers, configureStore, ThunkDispatch, UnknownAction } from '@reduxjs/toolkit'
-import { appReducer } from '../../model'
+import { appSlice } from '../../model'
 import { useDispatch, useSelector } from 'react-redux'
 import { authReducer } from '@/features/auth/model/slice/authSlice'
 import { dataTableReducer } from '@/entities/model/slice/dataTableSlice'
 
 const rootReducer = combineReducers({
-  app: appReducer,
+  app: appSlice,
   auth: authReducer,
   tableData: dataTableReducer,
 })

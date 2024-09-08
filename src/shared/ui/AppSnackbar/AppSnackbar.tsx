@@ -4,7 +4,7 @@ import Alert from '@mui/material/Alert'
 import { Slide } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '@/app/providers/store/store'
 import { selectAppError } from '@/app/model/appSelectors'
-import { setAppError, setAppStatus } from '@/app/model/appReducer'
+import { setAppError, setAppStatus } from '@/app/model/appSlice'
 
 const Transition = (props) => {
   return <Slide {...props} direction="up" />
