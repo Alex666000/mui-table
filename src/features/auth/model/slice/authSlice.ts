@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { authAPI } from '../../api'
 import { createAppAsyncThunk } from '@/shared/utils'
-import { handleServerAppError, handleServerNetworkError } from '@/shared/utils/error-utils'
 import { LoginParams } from '../type'
 import { ResultCode } from '@/shared/constants'
 import { AxiosError } from 'axios/index'
