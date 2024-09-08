@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, ValidateSliceCaseReducers } from '@reduxjs/toolkit'
 import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError } from '@/shared/utils'
 import { setAppError, setAppStatus } from '@/app/model/appSlice'
 import { CreateRecordResError, CreateRecordResErrors, dataTableAPI } from '../../api'
@@ -13,8 +13,8 @@ const slice = createSlice({
   initialState: {
     data: [] as TableData[],
     isDataLoaded: false, // Флаг: загружены данные с сервера?
-  } as typeof slice.getInitialState,
-  reducers: {} as any,
+  } satisfies TableState,
+  reducers: {} as ValidateSliceCaseReducers<TableState, any>,
   extraReducers: (builder) => {
     builder
       .addCase(fetchTableData.fulfilled, (state: TableState, action) => {
@@ -55,15 +55,37 @@ const fetchTableData = createAppAsyncThunk<{ tableData: TableData[] }, void>(
           return { tableData: res.data.data }
         } else {
           if (res.data.error_code === ResultCode.BadRequest) {
-            handleServerAppError(res.data, dispatch)
+            const errorMessage = res.data.error_code
+            dispatch(
+              setAppError({
+                error:
+                  errorMessage !== ResultCode.Success ? res.data.error_text : 'Some error occurred',
+              })
+            )
+            dispatch(setAppStatus({ status: 'failed' }))
             return rejectWithValue(null)
           }
         }
       }
-    } catch (error: AxiosError) {
+    } catch (error: Error | AxiosError) {
       dispatch(setAppStatus({ status: 'failed' }))
       if (state?.tableData?.isDataLoaded) {
-        handleServerNetworkError(error, dispatch)
+        let errorMessage = 'Connection error'
+
+        if (axios.isAxiosError(error)) {
+          // ⏺️ err?.message - например при логинизации в "offline" режиме
+          errorMessage = error.response?.data?.message || error?.message || errorMessage
+          // ❗ Проверка на наличие нативной ошибки - например "мапимся" по массиву "undefined"
+        } else if (error instanceof Error) {
+          errorMessage = `Native error: ${error.message}`
+          // ❗ Какой-то другой непонятный кейс
+        } else {
+          // переводим объект в строку
+          errorMessage = JSON.stringify(error)
+        }
+
+        dispatch(setAppError({ error: error.message ? error.message : errorMessage }))
+        dispatch(setAppStatus({ status: 'failed' }))
         return rejectWithValue(null)
       }
     }
@@ -81,11 +103,19 @@ const createRecord = createAppAsyncThunk<TableData, TableData>(
         return res.data.data
       } else {
         if (res.data.error_code === ResultCode.BadRequest) {
-          handleServerAppError(res.data, dispatch)
+          const errorMessage = res.data.error_code
+          dispatch(
+            setAppError({
+              error:
+                errorMessage !== ResultCode.Success ? res.data.error_text : 'Some error occurred',
+            })
+          )
+          dispatch(setAppStatus({ status: 'failed' }))
+
           return rejectWithValue(null)
         }
       }
-    } catch (error: AxiosError) {
+    } catch (error: AxiosError | Error) {
       let errorMessage
 
       if (axios.isAxiosError(error)) {
@@ -142,7 +172,43 @@ const updateRecord = createAppAsyncThunk<TableData, { id: string; data: TableDat
           return rejectWithValue(null)
         }
       }
-    } catch (error: AxiosError) {
+    } catch (error: AxiosError | Error) {
+      let errorMessage
+
+      if (axios.isAxiosError(error)) {
+        const axiosError = error
+
+        // Проверка наличия ошибок в ответе сервера
+        if (axiosError.response?.data) {
+          const responseData = axiosError.response.data as
+            | CreateRecordResErrors<CreateRecordResError>
+            | unknown
+          if (responseData.errors) {
+            const documentNameError = responseData.errors.documentName?.[0]
+            const documentStatusError = responseData.errors.documentStatus?.[0]
+
+            // Формируем сообщение об ошибке
+            if (documentNameError && documentStatusError) {
+              errorMessage = `${documentNameError} And ${documentStatusError}`
+            } else if (documentNameError) {
+              errorMessage = documentNameError
+            } else if (documentStatusError) {
+              errorMessage = documentStatusError
+            }
+          } else {
+            errorMessage = responseData.error_text || 'Server error'
+          }
+        } else {
+          errorMessage = 'Server error'
+        }
+      } else if (error instanceof Error) {
+        errorMessage = `Native error: ${error.message}`
+      } else {
+        errorMessage = `Unknown error: ${JSON.stringify(error)}`
+      }
+
+      dispatch(setAppError({ error: errorMessage }))
+      dispatch(setAppStatus({ status: 'failed' }))
       return rejectWithValue(null)
     }
   }
@@ -163,8 +229,23 @@ const deleteRecord = createAppAsyncThunk<TableData, string>(
           return rejectWithValue(null)
         }
       }
-    } catch (error: AxiosError) {
-      handleServerNetworkError(error, dispatch)
+    } catch (error: AxiosError | Error) {
+      let errorMessage = 'Connection error'
+
+      if (axios.isAxiosError(error)) {
+        // ⏺️ err?.message - например при логинизации в "offline" режиме
+        errorMessage = error.response?.data?.message || error?.message || errorMessage
+        // ❗ Проверка на наличие нативной ошибки - например "мапимся" по массиву "undefined"
+      } else if (error instanceof Error) {
+        errorMessage = `Native error: ${error.message}`
+        // ❗ Какой-то другой непонятный кейс
+      } else {
+        // переводим объект в строку
+        errorMessage = JSON.stringify(error)
+      }
+
+      dispatch(setAppError({ error: error.message ? error.message : errorMessage }))
+      dispatch(setAppStatus({ status: 'failed' }))
       return rejectWithValue(null)
     }
   }
