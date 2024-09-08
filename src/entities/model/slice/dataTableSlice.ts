@@ -45,8 +45,8 @@ const fetchTableData = createAppAsyncThunk<{ tableData: Table[] }, void>(
     const { dispatch, getState, rejectWithValue } = thunkAPI
     const state = getState() as AppRootState
 
-    try {
-      if (!state?.tableData?.isDataLoaded) {
+    if (!state?.tableData?.isDataLoaded) {
+      try {
         dispatch(setAppStatus({ status: 'loading' }))
         const res = await dataTableAPI.fetchTableData()
         if (res.data.error_code === ResultCode.Success) {
@@ -56,10 +56,10 @@ const fetchTableData = createAppAsyncThunk<{ tableData: Table[] }, void>(
           handleServerAppError(res.data, dispatch)
           return rejectWithValue(null)
         }
+      } catch (error: AxiosError | Error) {
+        handleServerNetworkError(error, dispatch)
+        return rejectWithValue(null)
       }
-    } catch (error: AxiosError | Error) {
-      handleServerNetworkError(error, dispatch)
-      return rejectWithValue(null)
     }
   }
 )
