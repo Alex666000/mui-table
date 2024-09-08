@@ -1,11 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { authAPI, LoginParams } from '../../api'
-import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError } from '@/shared/utils'
+import { createAppAsyncThunk, handleServerAppError } from '@/shared/utils'
 import { ResultCode } from '@/shared/constants'
-import { AxiosError } from 'axios/index'
-import { setAppInitialized, setAppStatus } from '@/app/model'
 import { thunkTryCatch } from '@/shared/utils/thunkTryCatch'
 
+// slice:
 const slice = createSlice({
   name: 'auth',
   initialState: {
@@ -52,6 +51,7 @@ const login = createAppAsyncThunk<{ isLoggedIn: boolean; token: string }, LoginP
   }
 )
 
+// reducer + actions + thunks
 export const authReducer = slice.reducer
 export const { logout } = slice.actions
 export const authThunks = { login }

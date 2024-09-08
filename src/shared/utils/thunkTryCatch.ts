@@ -1,16 +1,17 @@
 import { setAppInitialized, setAppStatus } from '@/app/model'
-import { handleServerNetworkError } from '@/shared/utils/error-utils'
+import { handleServerNetworkError, ReduxDispatch } from '@/shared/utils/error-utils'
 import { AxiosError } from 'axios'
-import { ThunkDispatch, UnknownAction } from '@reduxjs/toolkit'
+import { createAppAsyncThunk } from '@/shared/utils/createAppAsyncThunk'
 
 type ThunkAPI = {
-  dispatch: ThunkDispatch<any, any, UnknownAction>
-  rejectWithValue: any
+  dispatch: ReduxDispatch
+  rejectWithValue: createAppAsyncThunk['rejectValue']
 }
 
-export const thunkTryCatch = async (thunkAPI: ThunkAPI, logic: () => Promise<any>) => {
-  const { dispatch, rejectWithValue } = thunkAPI
-
+export const thunkTryCatch = async (
+  { dispatch, rejectWithValue }: ThunkAPI,
+  logic: () => Promise<any>
+) => {
   try {
     dispatch(setAppStatus({ status: 'loading' }))
     // logic

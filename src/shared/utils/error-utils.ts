@@ -60,10 +60,8 @@ export const handleServerNetworkError = (
     } else {
       errorMessage = 'No internet connection'
     }
-  } else if (error instanceof Error) {
-    errorMessage = `Native error: ${error.message}`
   } else {
-    errorMessage = `Unknown error: ${JSON.stringify(error)}`
+    errorMessage = `Native error: ${error.message}`
   }
 
   dispatch(setAppError({ error: errorMessage }))
@@ -72,4 +70,4 @@ export const handleServerNetworkError = (
 
 // type
 type CatchError = AxiosError | Error
-type ReduxDispatch = ThunkDispatch<AppRootState, unknown, UnknownAction>
+export type ReduxDispatch = ThunkDispatch<AppRootState, unknown, UnknownAction>

@@ -1,8 +1,7 @@
 import { createSlice, ValidateSliceCaseReducers } from '@reduxjs/toolkit'
-import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError } from '@/shared/utils'
+import { createAppAsyncThunk, handleServerAppError } from '@/shared/utils'
 import { setAppStatus } from '@/app/model/appSlice'
 import { dataTableAPI } from '../../api'
-import { AxiosError } from 'axios'
 import { AppRootState } from '@/app/providers/store/store'
 import { ResultCode } from '@/shared/constants'
 import { Table, TableState } from '../types'
@@ -13,7 +12,7 @@ const slice = createSlice({
   name: 'table',
   initialState: {
     data: [] as Table[],
-    isDataLoaded: false, // Флаг: загружены данные с сервера?
+    isDataLoaded: false, // Флаг: загружены данные?
   } satisfies TableState,
   reducers: {} as ValidateSliceCaseReducers<TableState, any>,
   extraReducers: (builder) => {
