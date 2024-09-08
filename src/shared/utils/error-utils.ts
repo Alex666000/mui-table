@@ -1,3 +1,19 @@
+import { ResultCode } from '@/shared/constants'
+import { setAppError, setAppStatus } from '@/app/model'
+
+export const handleServerAppError = () => {
+  if (res.data.error_code === ResultCode.BadRequest) {
+    const errorMessage = res.data.error_code
+    dispatch(
+      setAppError({
+        error: errorMessage !== ResultCode.Success ? res.data.error_text : 'Some error occurred',
+      })
+    )
+    dispatch(setAppStatus({ status: 'failed' }))
+    return rejectWithValue(null)
+  }
+}
+
 // /**
 //  * Обрабатывает ошибки, полученные от сервера, и обновляет статус приложения.
 //  * @param {BadRequest} data - Объект ошибки, полученный от сервера, содержащий код ошибки и текст ошибки.

@@ -1,11 +1,12 @@
 import { createSlice, ValidateSliceCaseReducers } from '@reduxjs/toolkit'
-import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError } from '@/shared/utils'
+import { createAppAsyncThunk } from '@/shared/utils'
 import { setAppError, setAppStatus } from '@/app/model/appSlice'
 import { CreateRecordResError, CreateRecordResErrors, dataTableAPI } from '../../api'
 import axios, { AxiosError } from 'axios'
 import { AppRootState } from '@/app/providers/store/store'
 import { ResultCode } from '@/shared/constants'
 import { TableData, TableState } from '../types'
+import { handleServerAppError } from '@/shared/utils/error-utils'
 
 // slice
 const slice = createSlice({
@@ -54,17 +55,18 @@ const fetchTableData = createAppAsyncThunk<{ tableData: TableData[] }, void>(
           dispatch(setAppStatus({ status: 'succeeded' }))
           return { tableData: res.data.data }
         } else {
-          if (res.data.error_code === ResultCode.BadRequest) {
-            const errorMessage = res.data.error_code
-            dispatch(
-              setAppError({
-                error:
-                  errorMessage !== ResultCode.Success ? res.data.error_text : 'Some error occurred',
-              })
-            )
-            dispatch(setAppStatus({ status: 'failed' }))
-            return rejectWithValue(null)
-          }
+          handleServerAppError()
+          // if (res.data.error_code === ResultCode.BadRequest) {
+          //   const errorMessage = res.data.error_code
+          //   dispatch(
+          //     setAppError({
+          //       error:
+          //         errorMessage !== ResultCode.Success ? res.data.error_text : 'Some error occurred',
+          //     })
+          //   )
+          //   dispatch(setAppStatus({ status: 'failed' }))
+          //   return rejectWithValue(null)
+          // }
         }
       }
     } catch (error: Error | AxiosError) {
@@ -111,7 +113,6 @@ const createRecord = createAppAsyncThunk<TableData, TableData>(
             })
           )
           dispatch(setAppStatus({ status: 'failed' }))
-
           return rejectWithValue(null)
         }
       }
@@ -168,6 +169,13 @@ const updateRecord = createAppAsyncThunk<TableData, { id: string; data: TableDat
         return res.data.data
       } else {
         if (res.data.error_code === ResultCode.BadRequest) {
+          const errorMessage = res.data.error_code
+          dispatch(
+            setAppError({
+              error:
+                errorMessage !== ResultCode.Success ? res.data.error_text : 'Some error occurred',
+            })
+          )
           dispatch(setAppStatus({ status: 'failed' }))
           return rejectWithValue(null)
         }
@@ -225,6 +233,13 @@ const deleteRecord = createAppAsyncThunk<TableData, string>(
         return { id } // Возвращаем только id удаленной записи
       } else {
         if (res.data.error_code === ResultCode.BadRequest) {
+          const errorMessage = res.data.error_code
+          dispatch(
+            setAppError({
+              error:
+                errorMessage !== ResultCode.Success ? res.data.error_text : 'Some error occurred',
+            })
+          )
           dispatch(setAppStatus({ status: 'failed' }))
           return rejectWithValue(null)
         }

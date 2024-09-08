@@ -58,7 +58,6 @@ const login = createAppAsyncThunk<{ isLoggedIn: boolean; token: string }, LoginP
             })
           )
           dispatch(setAppStatus({ status: 'failed' }))
-
           return rejectWithValue(null)
         }
       }
