@@ -8,6 +8,8 @@ const initialState = {
   error: null as Nullable<string>,
   // флаг инициализации приложения
   isInitialized: false,
+  // состояние для успешного сообщения
+  successMessage: null as Nullable<string>,
 }
 
 export type RequestStatus = 'idle' | 'loading' | 'succeeded' | 'failed' | ''
@@ -25,8 +27,12 @@ const slice = createSlice({
     setAppInitialized: (state, action: PayloadAction<{ isInitialized: boolean }>) => {
       state.isInitialized = action.payload.isInitialized
     },
+    setAppSuccess: (state, action: PayloadAction<{ message: string }>) => {
+      state.successMessage = action.payload.message
+      state.error = null
+    },
   },
 })
 
 export const appSlice = slice.reducer
-export const { setAppStatus, setAppInitialized, setAppError } = slice.actions
+export const { setAppStatus, setAppInitialized, setAppError, setAppSuccess } = slice.actions

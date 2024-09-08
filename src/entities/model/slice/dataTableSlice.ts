@@ -1,6 +1,6 @@
 import { createSlice, ValidateSliceCaseReducers } from '@reduxjs/toolkit'
 import { createAppAsyncThunk, handleServerAppError, thunkTryCatch } from '@/shared/utils'
-import { setAppStatus } from '@/app/model/appSlice'
+import { setAppStatus, setAppSuccess } from '@/app/model/appSlice'
 import { dataTableAPI } from '../../api'
 import { AppRootState } from '@/app/providers/store/store'
 import { ResultCode } from '@/shared/constants'
@@ -66,6 +66,7 @@ const createRecord = createAppAsyncThunk<Table, Table>(
     return thunkTryCatch(thunkAPI, async () => {
       const res = await dataTableAPI.createRecord(newRecord)
       if (res.data.error_code === ResultCode.Success) {
+        dispatch(setAppSuccess({ message: 'Record successfully added!' }))
         return res.data.data
       } else {
         handleServerAppError(res.data, dispatch)
@@ -83,6 +84,7 @@ const updateRecord = createAppAsyncThunk<Table, { id: string; data: Table }>(
     return thunkTryCatch(thunkAPI, async () => {
       const res = await dataTableAPI.updateRecord(id, data)
       if (res.data.error_code === ResultCode.Success) {
+        dispatch(setAppSuccess({ message: 'Record successfully updated!' }))
         return res.data.data
       } else {
         handleServerAppError(res.data, dispatch)
@@ -102,6 +104,7 @@ const deleteRecord = createAppAsyncThunk<Table, string>(
       const res = await dataTableAPI.deleteRecord(id)
       if (res.data.error_code === ResultCode.Success) {
         dispatch(setAppStatus({ status: 'succeeded' }))
+        dispatch(setAppSuccess({ message: 'Record successfully deleted!' }))
         return { id } // Возвращаем только id удаленной записи
       } else {
         handleServerAppError(res.data, dispatch)
