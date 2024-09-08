@@ -8,7 +8,7 @@ const initialState = {
   error: null as Nullable<string>,
   // флаг инициализации приложения
   isInitialized: false,
-  // состояние для успешного сообщения
+  // состояние для успешного "глобального" уведомления
   successMessage: null as Nullable<string>,
 }
 

@@ -37,7 +37,7 @@ const slice = createSlice({
   },
 })
 
-// thunks
+// thunks:
 const fetchTableData = createAppAsyncThunk<{ tableData: Table[] }, void>(
   `${slice.name}/fetchTable`,
   async (_, thunkAPI) => {
