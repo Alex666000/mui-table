@@ -1,6 +1,6 @@
 import { instance } from '@/shared/api'
 import { ResponseData, GetRequestMethod, PostRequestMethod, Record, Table } from '../model/types'
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig } from 'axios'
 
 const token = localStorage.getItem('authToken')
 
