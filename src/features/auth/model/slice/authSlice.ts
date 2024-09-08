@@ -11,7 +11,7 @@ const slice = createSlice({
   name: 'auth',
   initialState: {
     isLoggedIn: !!localStorage.getItem('authToken'), // Инициализация состояния на основе наличия токена
-    needsReload: false, // флаг для принудительной перезагрузки страницы
+    needsReload: false,
   },
   reducers: {
     logout: (state) => {
@@ -25,7 +25,7 @@ const slice = createSlice({
       state.isLoggedIn = action?.payload?.isLoggedIn
       state.token = action?.payload?.token
       localStorage.setItem('authToken', action?.payload?.token)
-      state.needsReload = true // Устанавливаем флаг
+      state.needsReload = true
     })
   },
 } as ReturnType<typeof slice>)
