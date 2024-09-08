@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { authAPI } from '../../api'
+import { authAPI, LoginParams } from '../../api'
 import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError } from '@/shared/utils'
-import { LoginParams } from '../type'
 import { ResultCode } from '@/shared/constants'
 import { AxiosError } from 'axios/index'
 import { setAppInitialized, setAppStatus } from '@/app/model'

@@ -16,22 +16,6 @@ export type BadRequestResData = BaseResponse & {
   data?: null
 }
 
-export type ResponseData<D = {}> = {
-  error_code: number
-  error_message: string
-  data?: D
-  profiling: string
-  timings?: null
-}
-
-export type BadRequestResData = {
-  error_code: number
-  error_text: string
-  data?: null
-  profiling: string
-  timings?: null
-}
-
 export type Table = {
   id: string
   documentStatus: string
