@@ -5,11 +5,10 @@ import { CreateRecordResError, CreateRecordResErrors } from '@/entities/api'
 import { BadRequestResData, ResponseData } from '@/entities/model/types'
 import { ThunkDispatch, UnknownAction } from '@reduxjs/toolkit'
 import { AppRootState } from '@/app/providers/store/store'
+import { AxiosError } from 'axios/index'
 
-export const handleServerAppError = (
-  data: BadRequestResData,
-  dispatch: ThunkDispatch<AppRootState, unknown, UnknownAction>
-) => {
+// handleServerAppError
+export const handleServerAppError = (data: BadRequestResData, dispatch: ReduxDispatch) => {
   if (data.error_code === ResultCode.BadRequest) {
     const errorMessage = data.error_code
     dispatch(
@@ -21,7 +20,11 @@ export const handleServerAppError = (
   }
 }
 
-export const handleServerNetworkError = () => {
+// handleServerNetworkError
+export const handleServerNetworkError = (
+  error: CatchError,
+  dispatch: ThunkDispatch<AppRootState, unknown, UnknownAction>
+) => {
   let errorMessage
 
   if (axios.isAxiosError(error)) {
@@ -58,8 +61,11 @@ export const handleServerNetworkError = () => {
 
   dispatch(setAppError({ error: errorMessage }))
   dispatch(setAppStatus({ status: 'failed' }))
-  return rejectWithValue(null)
 }
+
+// type
+type CatchError = AxiosError | Error
+type ReduxDispatch = ThunkDispatch<AppRootState, unknown, UnknownAction>
 
 // /**
 //  * Обрабатывает ошибки, полученные от сервера, и обновляет статус приложения.

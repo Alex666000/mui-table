@@ -59,43 +59,7 @@ const fetchTableData = createAppAsyncThunk<{ tableData: Table[] }, void>(
         }
       }
     } catch (error: AxiosError | Error) {
-      // handleServerNetworkError()
-      let errorMessage
-
-      if (axios.isAxiosError(error)) {
-        const axiosError = error
-
-        // Проверка наличия ошибок в ответе сервера
-        if (axiosError.response?.data) {
-          const responseData = axiosError.response.data as
-            | CreateRecordResErrors<CreateRecordResError>
-            | unknown
-          if (responseData.errors) {
-            const documentNameError = responseData.errors.documentName?.[0]
-            const documentStatusError = responseData.errors.documentStatus?.[0]
-
-            // Формируем сообщение об ошибке
-            if (documentNameError && documentStatusError) {
-              errorMessage = `${documentNameError} And ${documentStatusError}`
-            } else if (documentNameError) {
-              errorMessage = documentNameError
-            } else if (documentStatusError) {
-              errorMessage = documentStatusError
-            }
-          } else {
-            errorMessage = responseData.error_text || 'Server error'
-          }
-        } else {
-          errorMessage = 'Server error'
-        }
-      } else if (error instanceof Error) {
-        errorMessage = `Native error: ${error.message}`
-      } else {
-        errorMessage = `Unknown error: ${JSON.stringify(error)}`
-      }
-
-      dispatch(setAppError({ error: errorMessage }))
-      dispatch(setAppStatus({ status: 'failed' }))
+      handleServerNetworkError(error, dispatch)
       return rejectWithValue(null)
     }
   }
@@ -115,42 +79,7 @@ const createRecord = createAppAsyncThunk<Table, Table>(
         return rejectWithValue(null)
       }
     } catch (error: AxiosError | Error) {
-      let errorMessage
-
-      if (axios.isAxiosError(error)) {
-        const axiosError = error
-
-        // Проверка наличия ошибок в ответе сервера
-        if (axiosError.response?.data) {
-          const responseData = axiosError.response.data as
-            | CreateRecordResErrors<CreateRecordResError>
-            | unknown
-          if (responseData.errors) {
-            const documentNameError = responseData.errors.documentName?.[0]
-            const documentStatusError = responseData.errors.documentStatus?.[0]
-
-            // Формируем сообщение об ошибке
-            if (documentNameError && documentStatusError) {
-              errorMessage = `${documentNameError} And ${documentStatusError}`
-            } else if (documentNameError) {
-              errorMessage = documentNameError
-            } else if (documentStatusError) {
-              errorMessage = documentStatusError
-            }
-          } else {
-            errorMessage = responseData.error_text || 'Server error'
-          }
-        } else {
-          errorMessage = 'Server error'
-        }
-      } else if (error instanceof Error) {
-        errorMessage = `Native error: ${error.message}`
-      } else {
-        errorMessage = `Unknown error: ${JSON.stringify(error)}`
-      }
-
-      dispatch(setAppError({ error: errorMessage }))
-      dispatch(setAppStatus({ status: 'failed' }))
+      handleServerNetworkError(error, dispatch)
       return rejectWithValue(null)
     }
   }
@@ -170,42 +99,7 @@ const updateRecord = createAppAsyncThunk<Table, { id: string; data: Table }>(
         return rejectWithValue(null)
       }
     } catch (error: AxiosError | Error) {
-      let errorMessage
-
-      if (axios.isAxiosError(error)) {
-        const axiosError = error
-
-        // Проверка наличия ошибок в ответе сервера
-        if (axiosError.response?.data) {
-          const responseData = axiosError.response.data as
-            | CreateRecordResErrors<CreateRecordResError>
-            | unknown
-          if (responseData.errors) {
-            const documentNameError = responseData.errors.documentName?.[0]
-            const documentStatusError = responseData.errors.documentStatus?.[0]
-
-            // Формируем сообщение об ошибке
-            if (documentNameError && documentStatusError) {
-              errorMessage = `${documentNameError} And ${documentStatusError}`
-            } else if (documentNameError) {
-              errorMessage = documentNameError
-            } else if (documentStatusError) {
-              errorMessage = documentStatusError
-            }
-          } else {
-            errorMessage = responseData.error_text || 'Server error'
-          }
-        } else {
-          errorMessage = 'Server error'
-        }
-      } else if (error instanceof Error) {
-        errorMessage = `Native error: ${error.message}`
-      } else {
-        errorMessage = `Unknown error: ${JSON.stringify(error)}`
-      }
-
-      dispatch(setAppError({ error: errorMessage }))
-      dispatch(setAppStatus({ status: 'failed' }))
+      handleServerNetworkError(error, dispatch)
       return rejectWithValue(null)
     }
   }
@@ -225,42 +119,7 @@ const deleteRecord = createAppAsyncThunk<Table, string>(
         return rejectWithValue(null)
       }
     } catch (error: AxiosError | Error) {
-      let errorMessage
-
-      if (axios.isAxiosError(error)) {
-        const axiosError = error
-
-        // Проверка наличия ошибок в ответе сервера
-        if (axiosError.response?.data) {
-          const responseData = axiosError.response.data as
-            | CreateRecordResErrors<CreateRecordResError>
-            | unknown
-          if (responseData.errors) {
-            const documentNameError = responseData.errors.documentName?.[0]
-            const documentStatusError = responseData.errors.documentStatus?.[0]
-
-            // Формируем сообщение об ошибке
-            if (documentNameError && documentStatusError) {
-              errorMessage = `${documentNameError} And ${documentStatusError}`
-            } else if (documentNameError) {
-              errorMessage = documentNameError
-            } else if (documentStatusError) {
-              errorMessage = documentStatusError
-            }
-          } else {
-            errorMessage = responseData.error_text || 'Server error'
-          }
-        } else {
-          errorMessage = 'Server error'
-        }
-      } else if (error instanceof Error) {
-        errorMessage = `Native error: ${error.message}`
-      } else {
-        errorMessage = `Unknown error: ${JSON.stringify(error)}`
-      }
-
-      dispatch(setAppError({ error: errorMessage }))
-      dispatch(setAppStatus({ status: 'failed' }))
+      handleServerNetworkError(error, dispatch)
       return rejectWithValue(null)
     }
   }
