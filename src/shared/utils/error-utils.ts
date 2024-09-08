@@ -8,16 +8,23 @@ import { AppRootState } from '@/app/providers/store/store'
 import { AxiosError } from 'axios/index'
 
 // handleServerAppError
-export const handleServerAppError = (data: BadRequestResData, dispatch: ReduxDispatch) => {
-  if (data.error_code === ResultCode.BadRequest) {
-    const errorMessage = data.error_code
-    dispatch(
-      setAppError({
-        error: errorMessage !== ResultCode.Success ? data.error_text : 'Some error occurred',
-      })
-    )
-    dispatch(setAppStatus({ status: 'failed' }))
+export const handleServerAppError = (
+  data: BadRequestResData,
+  dispatch: ReduxDispatch,
+  isShowGlobalError: boolean = true
+) => {
+  if (isShowGlobalError) {
+    if (data.error_code === ResultCode.BadRequest) {
+      const errorMessage = data.error_code
+      dispatch(
+        setAppError({
+          error: errorMessage !== ResultCode.Success ? data.error_text : 'Some error occurred',
+        })
+      )
+    }
   }
+
+  dispatch(setAppStatus({ status: 'failed' }))
 }
 
 // handleServerNetworkError
