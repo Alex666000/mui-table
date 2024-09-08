@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectDataTable } from '../../model/selectors'
 import { selectIsLoggedIn } from '@/features/auth/model/selectors/auth.selectors'
@@ -26,6 +26,8 @@ export const DataTable = (): ReturnComponent => {
   const tableData = useSelector(selectDataTable)
   const status = useSelector(selectAppStatus)
 
+  const isMounted = useRef(false)
+
   const {
     isAddModalOpen,
     isEditModalOpen,
@@ -44,6 +46,7 @@ export const DataTable = (): ReturnComponent => {
   useEffect(() => {
     if (isLoggedIn || status === 'succeeded') {
       dispatch(tablesThunks.fetchTableData())
+      isMounted.current = true
     }
   }, [isLoggedIn, status, dispatch])
 

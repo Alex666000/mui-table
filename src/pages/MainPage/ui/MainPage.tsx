@@ -15,7 +15,6 @@ const MainPage = (): ReturnComponent => {
   if (!isLoggedIn) {
     return <Navigate to={ROUTES.login} />
   }
-  console.log('render MainPage')
 
   return <Fragment>{status === 'loading' ? <LinearProgress /> : <DataTable />}</Fragment>
 }
