@@ -1,12 +1,13 @@
 import { RequestStatus } from '@/app/model/appSlice'
 import { ReturnComponent } from '@/shared/types'
+import { memo } from 'react'
 
 type Props = {
   status: RequestStatus
   value: string
 }
 
-export const NotFindAnything = ({ status, value }: Props): ReturnComponent => {
+export const NotFindAnything = memo(({ status, value }: Props): ReturnComponent => {
   return (
     <div style={{ marginBottom: '25px' }}>
       {status !== 'loading' && (
@@ -20,4 +21,4 @@ export const NotFindAnything = ({ status, value }: Props): ReturnComponent => {
       )}
     </div>
   )
-}
+})

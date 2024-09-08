@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid2'
 import Typography from '@mui/material/Typography'
-import { ErrorImage } from '@/shared/assets/images/ErrorImage/ErrorImage'
 import { ROUTES } from '@/shared/constants/paths'
+import { ErrorImage } from '@/shared/assets/images/ErrorImage'
 
 const ErrorPage = () => {
   const navigate = useNavigate()
