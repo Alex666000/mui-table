@@ -6,6 +6,7 @@ import { AxiosError } from 'axios'
 import { AppRootState } from '@/app/providers/store/store'
 import { ResultCode } from '@/shared/constants'
 import { Table, TableState } from '../types'
+import { thunkTryCatch } from '@/shared/utils/thunkTryCatch'
 
 // slice
 const slice = createSlice({
@@ -46,20 +47,15 @@ const fetchTableData = createAppAsyncThunk<{ tableData: Table[] }, void>(
     const state = getState() as AppRootState
 
     if (!state?.tableData?.isDataLoaded) {
-      try {
-        dispatch(setAppStatus({ status: 'loading' }))
+      return thunkTryCatch(thunkAPI, async () => {
         const res = await dataTableAPI.fetchTableData()
         if (res.data.error_code === ResultCode.Success) {
-          dispatch(setAppStatus({ status: 'succeeded' }))
           return { tableData: res.data.data }
         } else {
           handleServerAppError(res.data, dispatch)
           return rejectWithValue(null)
         }
-      } catch (error: AxiosError | Error) {
-        handleServerNetworkError(error, dispatch)
-        return rejectWithValue(null)
-      }
+      })
     }
   }
 )
