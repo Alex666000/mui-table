@@ -69,6 +69,7 @@ const createRecord = createAppAsyncThunk<Table, Table>(
   async (newRecord, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI
     try {
+      dispatch(setAppStatus({ status: 'loading' }))
       const res = await dataTableAPI.createRecord(newRecord)
       if (res.data.error_code === ResultCode.Success) {
         dispatch(setAppStatus({ status: 'succeeded' }))
@@ -89,6 +90,7 @@ const updateRecord = createAppAsyncThunk<Table, { id: string; data: Table }>(
   async ({ id, data }, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI
     try {
+      dispatch(setAppStatus({ status: 'loading' }))
       const res = await dataTableAPI.updateRecord(id, data)
       if (res.data.error_code === ResultCode.Success) {
         dispatch(setAppStatus({ status: 'succeeded' }))
@@ -109,6 +111,7 @@ const deleteRecord = createAppAsyncThunk<Table, string>(
   async (id, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI
     try {
+      dispatch(setAppStatus({ status: 'loading' }))
       const res = await dataTableAPI.deleteRecord(id)
       if (res.data.error_code === ResultCode.Success) {
         dispatch(setAppStatus({ status: 'succeeded' }))
