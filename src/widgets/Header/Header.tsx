@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux'
 import { selectIsLoggedIn } from '@/features/auth/model/selectors/auth.selectors'
 import { logout } from '@/features/auth/model/slice/authSlice'
 import { useCallback } from 'react'
-import { Container, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import StyleIcon from '@mui/icons-material/Style'
 import LogoutIcon from '@mui/icons-material/Logout'
 

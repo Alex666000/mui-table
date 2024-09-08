@@ -5,8 +5,8 @@ import { selectIsInitialized } from './model/appSelectors'
 import { useEffect } from 'react'
 import { setAppInitialized } from './model'
 import { GlobalAppLoader } from '@/shared/ui/GlobalAppLoader'
-import s from './App.module.scss'
 import { Header } from '@/widgets/Header'
+import s from './App.module.scss'
 
 function App() {
   const isInitialized = useAppSelector(selectIsInitialized)

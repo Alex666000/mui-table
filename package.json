@@ -9,9 +9,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "prettier": "prettier . --write",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "prettier": "prettier . --write"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
@@ -22,7 +20,6 @@
     "axios": "^1.7.7",
     "clsx": "^2.1.1",
     "formik": "^2.4.6",
-    "gh-pages": "^6.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-redux": "^9.0.4",
@@ -44,5 +41,17 @@
     "typescript": "^5.3.3",
     "typescript-eslint": "^8.0.1",
     "vite": "^5.4.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
