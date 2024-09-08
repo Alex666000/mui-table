@@ -1,4 +1,4 @@
-import { setAppStatus } from '@/app/model'
+import { setAppInitialized, setAppStatus } from '@/app/model'
 import { handleServerNetworkError } from '@/shared/utils/error-utils'
 import { AxiosError } from 'axios'
 import { ThunkDispatch, UnknownAction } from '@reduxjs/toolkit'
@@ -20,5 +20,6 @@ export const thunkTryCatch = async (thunkAPI: ThunkAPI, logic: () => Promise<any
     return rejectWithValue(null)
   } finally {
     dispatch(setAppStatus({ status: 'idle' }))
+    dispatch(setAppInitialized({ isInitialized: true }))
   }
 }

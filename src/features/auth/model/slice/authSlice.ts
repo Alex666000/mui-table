@@ -4,6 +4,7 @@ import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError } f
 import { ResultCode } from '@/shared/constants'
 import { AxiosError } from 'axios/index'
 import { setAppInitialized, setAppStatus } from '@/app/model'
+import { thunkTryCatch } from '@/shared/utils/thunkTryCatch'
 
 const slice = createSlice({
   name: 'auth',
@@ -33,29 +34,21 @@ const login = createAppAsyncThunk<{ isLoggedIn: boolean; token: string }, LoginP
   `${slice.name}/login`,
   async (arg, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI
-    dispatch(setAppStatus({ status: 'loading' }))
 
-    try {
+    return thunkTryCatch(thunkAPI, async () => {
       const res = await authAPI.login(arg)
       // Проверяем успешность логина по `error_code === 0`
       if (res.data.error_code === ResultCode.Success) {
         const token = res.data.data.token // Извлекаем токен из ответа
-
         // Сохраняем токен в localStorage
         if (token) {
-          dispatch(setAppStatus({ status: 'succeeded' }))
           return { isLoggedIn: true, token }
         }
       } else {
         handleServerAppError(res.data, dispatch)
         return rejectWithValue(null)
       }
-    } catch (error: AxiosError) {
-      handleServerNetworkError(error, dispatch)
-      return rejectWithValue(null)
-    } finally {
-      dispatch(setAppInitialized({ isInitialized: true }))
-    }
+    })
   }
 )
 
