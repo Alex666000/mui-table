@@ -1,6 +1,6 @@
 ### Запуск проекта:
 
-1. Клонируйте репозиторий: `git clone https://github.com/Alex666000/material_ui_test
+1. Клонируйте репозиторий: `git clone https://github.com/Alex666000/mui-table
 2. Перейдите в каталог проекта: `cd t1-tasks`.
 3. Установите зависимости: `npm install`.
 4. Запустите сервер разработки: `npm run dev`.
@@ -11,8 +11,3 @@
 
 Проект написан в соответствии с методологией Feature sliced design (FSD)
 Ссылка на документацию - [feature sliced design] -> (https://feature-sliced.design/docs/get-started/tutorial)
-
-- если при добавлении заполнил не все поля то уведомление чтобы заполнил все поля
-- Димыча утилиты типы смотреть
-- при первом логине спам  запросов идет
-- forceupdate Ulbi

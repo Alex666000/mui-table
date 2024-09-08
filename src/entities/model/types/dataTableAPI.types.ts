@@ -1,5 +1,21 @@
 import { instance } from '@/shared/api'
 
+export type BaseResponse = {
+  error_code: number
+  profiling: string
+  timings?: null
+}
+
+export type ResponseData<D = {}> = BaseResponse & {
+  error_message: string
+  data?: D
+}
+
+export type BadRequestResData = BaseResponse & {
+  error_text: string
+  data?: null
+}
+
 export type ResponseData<D = {}> = {
   error_code: number
   error_message: string
