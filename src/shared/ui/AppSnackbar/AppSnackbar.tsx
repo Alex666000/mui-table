@@ -44,9 +44,8 @@ export function AppSnackbar() {
         autoHideDuration={4000}
         onClose={handleClose}
         TransitionComponent={Transition}
-        TransitionProps={{ timeout: { enter: 500, exit: 500 } }} // Плавное закрытие
-        sx={{ '& .MuiSnackbarContent-root': { transition: 'opacity 0.5s ease-in-out' } }} // Плавное изменение прозрачности
-      >
+        TransitionProps={{ timeout: { enter: 500, exit: 500 } }}
+        sx={{ '& .MuiSnackbarContent-root': { transition: 'opacity 0.5s ease-in-out' } }}>
         <Alert onClose={handleClose} severity="success" variant="filled" sx={{ width: '100%' }}>
           {successMessage}
         </Alert>
