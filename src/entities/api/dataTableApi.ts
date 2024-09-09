@@ -1,5 +1,5 @@
 import { instance } from '@/shared/api'
-import { ResponseData, GetRequestMethod, PostRequestMethod, Record, Table } from '../model/types'
+import { Record, ResponseData, Table } from '../model/types'
 import axios, { AxiosRequestConfig } from 'axios'
 
 const token = localStorage.getItem('authToken')
@@ -8,7 +8,7 @@ export const dataTableAPI = {
   fetchTableData() {
     return instance.get<ResponseData<Table[]>>('/ru/data/v3/testmethods/docs/userdocs/get', {
       headers: { 'x-auth': token },
-    } as axios.AxiosRequestConfig<any> | undefined)
+    } as AxiosRequestConfig)
   },
   createRecord(data: Record) {
     return instance.post<ResponseData<Record>>(
@@ -16,7 +16,7 @@ export const dataTableAPI = {
       data,
       {
         headers: { 'x-auth': token },
-      } as axios.AxiosRequestConfig<any> | undefined
+      } as AxiosRequestConfig
     )
   },
   updateRecord(id: string, data: Record) {
@@ -27,7 +27,7 @@ export const dataTableAPI = {
   deleteRecord(id: string) {
     return instance.post(`/ru/data/v3/testmethods/docs/userdocs/delete/${id}`, null, {
       headers: { 'x-auth': token },
-    } as axios.AxiosRequestConfig<any> | undefined)
+    } as AxiosRequestConfig)
   },
 }
 
@@ -39,7 +39,10 @@ export type CreateRecordResErrors<D> = {
   status: number
   traceId: string
 }
+
 export type CreateRecordResError = {
   documentName: string[]
   documentStatus: string[]
 }
+
+type AxiosRequestConfig = axios.AxiosRequestConfig<any> | undefined
